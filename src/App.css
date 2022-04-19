@@ -1,0 +1,44 @@
+.App {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 60px;
+}
+
+.error {
+  margin-top: 0;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  padding: 28px 100px 28px 100px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid darkred;
+  background-color: rgb(235, 162, 162);
+}
+
+.filterLable {
+  margin-right: 5px;
+}
+
+.filterInput {
+  margin-right: 15px;
+}
+
+.filter {
+  margin-bottom: 20px;
+}
+
+.statisticTable{
+  margin-bottom: 20px;
+}
+
+.positive {
+  background-color: rgb(172, 235, 172);
+}
+
+.negative {
+  background-color: rgb(235, 162, 162);
+}
