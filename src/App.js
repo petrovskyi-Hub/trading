@@ -53,19 +53,19 @@ function App() {
     <div className={s.App}>
       {/* {console.log(periods)} */}
       <FileInput setData={setData} setError={setError} />
-      <form className="filter" onSubmit={filterData}>
-        <label htmlFor="start" className="filterLable">
+      <form className={s.filter} onSubmit={filterData}>
+        <label htmlFor="start" className={s.filterLable}>
           Start date
         </label>
-        <input id="start" type="date" name="startDate" className="filterInput"></input>
-        <label htmlFor="end" className="filterLable">
+        <input id="start" type="date" name="startDate" className={s.filterInput}></input>
+        <label htmlFor="end" className={s.filterLable}>
           End date
         </label>
-        <input id="end" type="date" name="endDate" className="filterInput"></input>
+        <input id="end" type="date" name="endDate" className={s.filterInput}></input>
         <input type="submit" value="Filter"></input>
       </form>
       {error !== "" && (
-        <p className="error" role="alert">
+        <p className={s.error} role="alert">
           {error}
         </p>
       )}
