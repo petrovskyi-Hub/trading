@@ -36,9 +36,13 @@
 }
 
 .positive {
-  background-color: rgb(172, 235, 172);
+  color: lightgreen;
 }
 
 .negative {
-  background-color: rgb(235, 162, 162);
+  color: red;
+}
+
+h3 {
+  margin-top: 40px;
 }

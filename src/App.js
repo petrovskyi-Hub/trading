@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import s from "./App.module.css";
 import FileInput from "./components/FileInput";
-import DataTable from "./components/DataTable";
+import DealTable from "./components/DealTable/DealTable";
+import { algorithm1 } from "./services/algorithm1";
+import { algorithm2 } from "./services/algorithm2";
 
 function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState("");
-  const [periods, setPeriods] = useState("");
+  const [periods1, setPeriods1] = useState([]);
+  const [periods2, setPeriods2] = useState([]);
 
   useEffect(() => {
     if (filteredData.length) {
       // console.log("results", { filteredData });
-      setPeriods(calculate(filteredData));
+      setPeriods1(algorithm1(filteredData));
+      setPeriods2(algorithm2(filteredData));
     }
   }, [filteredData]);
 
@@ -46,7 +50,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={s.App}>
       {/* {console.log(periods)} */}
       <FileInput setData={setData} setError={setError} />
       <form className="filter" onSubmit={filterData}>
@@ -65,135 +69,69 @@ function App() {
           {error}
         </p>
       )}
-      {!!periods.length && (
+      {periods1.length > 0 && (
         <>
-          <table className="statisticTable">
-            <thead>
-              <tr key="0">
-                <th key={1}>№</th>
-                <th key={2}>Дата покупки</th>
-                <th key={3}>Дата продажи</th>
-                <th key={4}>Цена покупки</th>
-                <th key={5}>Цена продажи</th>
-                <th key={6}>%</th>
-              </tr>
-            </thead>
-            <tbody>
-              {periods.map((period, i) => (
-                <tr key={i}>
-                  <td key={1}>{i + 1}</td>
-                  <td key={2}>{period.buy.time}</td>
-                  <td key={3}>{period.sale.time}</td>
-                  <td key={4}>{period.buy.open}</td>
-                  <td key={5}>{period.sale.open}</td>
-                  <td key={6} className={period.profit > 0 ? "positive" : "negative"}>
-                    {period.profit}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p>
-            Суммарный %: <span>{periods.reduce((acc, period) => acc + Number(period.profit), 0).toFixed(2)}</span>
-          </p>
-          <p>
-            Средний %:{" "}
-            <span>{(periods.reduce((acc, period) => acc + Number(period.profit), 0) / periods.length).toFixed(2)}</span>
-          </p>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 1</h3>
+          {calcStats(periods1)}
+          <DealTable periods={periods1} />
         </>
       )}
-      {filteredData.length > 0 && <DataTable data={filteredData} setError={setError} />}
+      {!!periods2.length && (
+        <>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 2</h3>
+          {calcStats(periods2)}
+          <DealTable periods={periods2} />
+        </>
+      )}
+      {/* {filteredData.length > 0 && <DataTable data={filteredData} setError={setError} />} */}
     </div>
   );
 }
 
-const calculate = (data) => {
-  const MACDIndex = data[0].findIndex((el) => el === "MACD line");
-  const SignalIndex = data[0].findIndex((el) => el === "Signal");
-  const EMAIndex = data[0].findIndex((el) => el === "EMA on MACD line");
+const calcStats = (periods) => {
+  let counterP = 0;
+  let profitP = 0;
+  let profitN = 0;
+  let counterN = 0;
 
-  // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex);
-  let prevMACD = Number(data[1][MACDIndex]);
-  let prevSignal = Number(data[1][SignalIndex]);
-  let prevEMA = Number(data[1][EMAIndex]);
-  let startDate = null;
-  let buyDate = null;
-  let saleDate = null;
-  const period = {
-    start: null,
-    buy: null,
-    sale: null,
-  };
-
-  const periods = [];
-
-  for (let i = 2; i < data.length; i++) {
-    const curMACD = Number(data[i][MACDIndex]);
-    const curSignal = Number(data[i][SignalIndex]);
-    const curEMA = Number(data[i][EMAIndex]);
-
-    const isSale = prevMACD > prevSignal && curMACD < curSignal && buyDate !== null;
-
-    if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.sale = {
-        time: saleDate,
-        open: data[i][1],
-        high: data[i][2],
-        low: data[i][3],
-        close: data[i][4],
-      };
-      buyDate = null;
-      periods.push({ ...period, profit: ((period.sale.open / period.buy.open) * 100 - 100).toFixed(2) });
-
-      console.log(
-        "sale ",
-        saleDate //,
-        // "MACD ",
-        // Math.trunc(curMACD * 100) / 100,
-        // "Signal ",
-        // Math.trunc(curSignal * 100) / 100
-      );
+  for (let period of periods) {
+    if (period.profit > 0) {
+      profitP += Number(period.profit);
+      counterP += 1;
+    } else {
+      profitN += Number(period.profit);
+      counterN += 1;
     }
-
-    if (prevMACD > prevEMA && curEMA > curMACD && (buyDate === null || isSale)) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.start = {
-        time: startDate,
-        open: data[i][1],
-        high: data[i][2],
-        low: data[i][3],
-        close: data[i][4],
-      };
-      console.log("start ", startDate);
-    }
-
-    if (prevMACD < prevSignal && curMACD > curSignal && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.buy = {
-        time: buyDate,
-        open: data[i][1],
-        high: data[i][2],
-        low: data[i][3],
-        close: data[i][4],
-      };
-      startDate = null;
-      console.log(
-        "buy ",
-        buyDate //,
-        // "MACD ",
-        // Math.trunc(curMACD * 100) / 100,
-        // "Signal ",
-        // Math.trunc(curSignal * 100) / 100
-      );
-    }
-
-    prevMACD = curMACD;
-    prevSignal = curSignal;
-    prevEMA = curEMA;
   }
 
-  return periods;
+  const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+
+  return (
+    <>
+      <p>
+        <span>Суммарный % всех сделок: </span>
+        <span className={sumPercentage > 0 ? s.positive : s.negative}>
+          {sumPercentage > 0 ? "+" : "-"}
+          {sumPercentage.toFixed(2)}
+        </span>
+      </p>
+      <p>
+        <span>Средний % прибыльных/убыточных сделок: </span>
+        <span className={s.positive}>+{(profitP / counterP).toFixed(2)}</span>/
+        <span className={s.negative}>{(profitN / counterN).toFixed(2)}</span>
+      </p>
+      <p>
+        Общее количество сделок/прибыльных/убыточных: {periods.length}/{counterP}/{counterN}
+      </p>
+      <p>
+        Соотношение сделок в % прибыльных/убыточных: {((counterP / periods.length) * 100).toFixed(2)}/
+        {((counterN / periods.length) * 100).toFixed(2)}
+      </p>
+      <p>
+        Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(2)}</span>
+      </p>
+    </>
+  );
 };
 
 export default App;
