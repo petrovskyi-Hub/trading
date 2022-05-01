@@ -9,6 +9,7 @@ import { algorithm3 } from "./services/algorithm3";
 function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [title, setTitle] = useState("");
   const [error, setError] = useState("");
   const [periods1, setPeriods1] = useState([]);
   const [periods2, setPeriods2] = useState([]);
@@ -55,7 +56,7 @@ function App() {
   return (
     <div className={s.App}>
       {/* {console.log(periods)} */}
-      <FileInput setData={setData} setError={setError} />
+      <FileInput setData={setData} setError={setError} setTitle={setTitle} />
       <form className={s.filter} onSubmit={filterData}>
         <label htmlFor="start" className={s.filterLable}>
           Start date
@@ -75,6 +76,7 @@ function App() {
       {!!periods1.length && (
         <>
           <h3 style={{ textAlign: "center" }}>Алгоритм 1</h3>
+          <h4>Файл - {title}</h4>
           <p>
             - Запуск перед покупкой MACD сверху-вниз EMA <br />- Покупка MACD снизу-вверх Signal (на откр бара) <br />-
             Продажа MACD сверху-вниз Signal (на откр бара)
@@ -86,8 +88,9 @@ function App() {
       {!!periods2.length && (
         <>
           <h3 style={{ textAlign: "center" }}>Алгоритм 2</h3>
+          <h4>Файл - {title}</h4>
           <p>
-            - Запуск перед покупкой MACD сверху-вниз Signal <br />- Покупка MACD снизу-вверх EMA (на откр бара) <br />-
+            - Запуск перед покупкой MACD снизу-вниз Signal <br />- Покупка MACD снизу-вверх EMA (на откр бара) <br />-
             Продажа MACD сверху-вниз Signal (на откр бара)
           </p>
           {calcStats(periods2)}
@@ -97,6 +100,7 @@ function App() {
       {!!periods3.length && (
         <>
           <h3 style={{ textAlign: "center" }}>Алгоритм 3</h3>
+          <h4>Файл - {title}</h4>
           <p>
             - Запуск перед покупкой MACD сверху-вниз EMA <br />- Покупка MACD снизу-вверх Signal (на закр бара) <br />-
             Продажа MACD сверху-вниз Signal (на откр бара)

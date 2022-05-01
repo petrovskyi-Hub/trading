@@ -3,7 +3,7 @@ import Papa from "papaparse";
 import PropTypes from "prop-types";
 import s from "./FileInput.module.css";
 
-export default function FileInput({ setData, setError }) {
+export default function FileInput({ setData, setError, setTitle }) {
   const fileInput = createRef();
   const [isUploaded, setIsUploaded] = useState(false);
 
@@ -12,6 +12,7 @@ export default function FileInput({ setData, setError }) {
     setError("");
 
     if (fileInput?.current?.files[0]) {
+      setTitle(fileInput?.current?.files[0].name);
       Papa.parse(fileInput?.current?.files[0], {
         complete: function (results) {
           if (results.errors.length) {
