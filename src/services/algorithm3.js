@@ -1,4 +1,4 @@
-export const algorithm1 = (data) => {
+export const algorithm3 = (data) => {
   const MACDIndex = data[0].findIndex((el) => el === "MACD line");
   const SignalIndex = data[0].findIndex((el) => el === "Signal");
   const EMAIndex = data[0].findIndex((el) => el === "EMA on MACD line");
@@ -18,7 +18,7 @@ export const algorithm1 = (data) => {
 
   const periods = [];
 
-  console.log("algorithm 1");
+  console.log("algorithm 3");
 
   for (let i = 2; i < data.length; i++) {
     const curMACD = Number(data[i][MACDIndex]);
@@ -32,9 +32,6 @@ export const algorithm1 = (data) => {
       period.sale = {
         time: saleDate,
         price: data[i][1], //open
-        // high: data[i][2],
-        // low: data[i][3],
-        // close: data[i][4],
       };
       buyDate = null;
       periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
@@ -61,10 +58,10 @@ export const algorithm1 = (data) => {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
-        price: data[i][1], //open
+        // open: data[i][1],
         // high: data[i][2],
         // low: data[i][3],
-        // close: data[i][4],
+        price: data[i][4], //close
       };
       startDate = null;
       console.log(
