@@ -19,7 +19,7 @@
   background-color: rgb(235, 162, 162);
 }
 
-.filterLable {
+.filterLabel {
   margin-right: 5px;
 }
 
@@ -29,6 +29,7 @@
 
 .filter {
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .statisticTable{
@@ -45,4 +46,8 @@
 
 h3 {
   margin-top: 40px;
+}
+
+.indicatorLabel {
+  margin-right: 5px;
 }

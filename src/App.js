@@ -1,26 +1,44 @@
 import { useState, useEffect } from "react";
 import s from "./App.module.css";
 import FileInput from "./components/FileInput";
+import DataTable from "./components/DataTable";
 import DealTable from "./components/DealTable/DealTable";
-import { algorithm1 } from "./services/algorithm1";
-import { algorithm2 } from "./services/algorithm2";
-import { algorithm3 } from "./services/algorithm3";
+import { algorithm1 } from "./services/algorithm1.1";
+import { algorithm2 } from "./services/algorithm2.1";
+import { algorithm41 } from "./services/algorithm4.1";
+import { algorithm42 } from "./services/algorithm4.2";
 
 function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
+  const [indicator, setIndicator] = useState("MACD");
+
   const [periods1, setPeriods1] = useState([]);
   const [periods2, setPeriods2] = useState([]);
-  const [periods3, setPeriods3] = useState([]);
+  const [periods41, setPeriods41] = useState([]);
+  const [periods42, setPeriods42] = useState([]);
+
+  const [periodsI1, setPeriodsI1] = useState([]);
 
   useEffect(() => {
     if (filteredData.length) {
       // console.log("results", { filteredData });
-      setPeriods1(algorithm1(filteredData));
-      setPeriods2(algorithm2(filteredData));
-      setPeriods3(algorithm3(filteredData));
+      switch (indicator) {
+        case "MACD":
+          setPeriods1(algorithm1(filteredData));
+          setPeriods2(algorithm2(filteredData));
+          setPeriods41(algorithm41(filteredData));
+          setPeriods42(algorithm42(filteredData));
+          break;
+
+        case "Ichimoku":
+          setPeriodsI1();
+          break;
+        default:
+          break;
+      }
     }
   }, [filteredData]);
 
@@ -57,12 +75,19 @@ function App() {
     <div className={s.App}>
       {/* {console.log(periods)} */}
       <FileInput setData={setData} setError={setError} setTitle={setTitle} />
+      <label htmlFor="start">
+        <span className={s.indicatorLabel}>Выберите индикатор</span>
+        <select value={indicator} onChange={(e) => setIndicator(e.target.value)}>
+          <option value="MACD">MACD</option>
+          <option value="Ichimoku">MACD + Ichimoku</option>
+        </select>
+      </label>
       <form className={s.filter} onSubmit={filterData}>
-        <label htmlFor="start" className={s.filterLable}>
+        <label htmlFor="start" className={s.filterLabel}>
           Start date
         </label>
         <input id="start" type="date" name="startDate" className={s.filterInput}></input>
-        <label htmlFor="end" className={s.filterLable}>
+        <label htmlFor="end" className={s.filterLabel}>
           End date
         </label>
         <input id="end" type="date" name="endDate" className={s.filterInput}></input>
@@ -73,13 +98,34 @@ function App() {
           {error}
         </p>
       )}
-      {!!periods1.length && (
+      {!!periods41.length && (
         <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм 1</h3>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 4.1</h3>
           <h4>Файл - {title}</h4>
           <p>
-            - Запуск перед покупкой MACD сверху-вниз EMA <br />- Покупка MACD снизу-вверх Signal (на откр бара) <br />-
-            Продажа MACD сверху-вниз Signal (на откр бара)
+            - Покупка MACD снизу-вверх Dots (на закр бара) <br />- Продажа MACD сверху-вниз Dots (на откр бара)
+          </p>
+          {calcStats(periods41)}
+          <DealTable periods={periods41} />
+        </>
+      )}
+      {!!periods42.length && (
+        <>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 4.2</h3>
+          <h4>Файл - {title}</h4>
+          <p>
+            - Покупка MACD снизу-вверх EMA (на закр бара) <br />- Продажа MACD сверху-вниз Dots (на откр бара)
+          </p>
+          {calcStats(periods42)}
+          <DealTable periods={periods42} />
+        </>
+      )}
+      {!!periods1.length && (
+        <>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 1.1</h3>
+          <h4>Файл - {title}</h4>
+          <p>
+            - Покупка MACD снизу-вверх Signal (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на откр бара)
           </p>
           {calcStats(periods1)}
           <DealTable periods={periods1} />
@@ -87,28 +133,16 @@ function App() {
       )}
       {!!periods2.length && (
         <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм 2</h3>
+          <h3 style={{ textAlign: "center" }}>Алгоритм 2.1</h3>
           <h4>Файл - {title}</h4>
           <p>
-            - Запуск перед покупкой MACD снизу-вниз Signal <br />- Покупка MACD снизу-вверх EMA (на откр бара) <br />-
-            Продажа MACD сверху-вниз Signal (на откр бара)
+            - Покупка MACD снизу-вверх EMA (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на откр бара)
           </p>
           {calcStats(periods2)}
           <DealTable periods={periods2} />
         </>
       )}
-      {!!periods3.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм 3</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Запуск перед покупкой MACD сверху-вниз EMA <br />- Покупка MACD снизу-вверх Signal (на закр бара) <br />-
-            Продажа MACD сверху-вниз Signal (на откр бара)
-          </p>
-          {calcStats(periods3)}
-          <DealTable periods={periods3} />
-        </>
-      )}
+
       {/* {filteredData.length > 0 && <DataTable data={filteredData} setError={setError} />} */}
     </div>
   );
