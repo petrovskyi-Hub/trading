@@ -20,7 +20,7 @@ export default function (data) {
 
   const periods = [];
 
-  console.log("algorithm I1");
+  console.log("algorithm I1a");
 
   for (let i = 2; i < data.length; i++) {
     const prevMACD = Number(data[i - 1][MACDIndex]);
@@ -47,7 +47,7 @@ export default function (data) {
       periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
 
       console.log(
-        "I1 sale ",
+        "I1a sale ",
         saleDate //,
         // "MACD ",
         // Math.trunc(curMACD * 100) / 100,
@@ -61,17 +61,17 @@ export default function (data) {
       period.start = {
         time: startDate,
       };
-      console.log("I1 start ", startDate);
+      console.log("I1a start ", startDate);
     }
 
-    if (prevMACD < prevSignal && curMACD > curSignal && startDate !== null) {
+    if (prevMACD < prevEMA && curMACD > curEMA && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
         price: data[i][close],
       };
       startDate = null;
-      console.log("I1 buy ", buyDate);
+      console.log("I1a buy ", buyDate);
     }
   }
 

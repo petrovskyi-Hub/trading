@@ -20,7 +20,7 @@ export default function (data) {
 
   const periods = [];
 
-  console.log("algorithm I1");
+  console.log("algorithm I5");
 
   for (let i = 2; i < data.length; i++) {
     const prevMACD = Number(data[i - 1][MACDIndex]);
@@ -35,7 +35,8 @@ export default function (data) {
     const curEMA = Number(data[i][EMAIndex]);
     const curLifeTime = Number(data[i][LifeTimeIndex]);
 
-    const isSale = prevMACD > prevSignal && curMACD < curSignal && buyDate !== null;
+    const isSale =
+      ((prevLifeTime === 1 && curLifeTime === 0) || (prevLifeTime === 2 && curLifeTime === 0)) && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
@@ -47,7 +48,7 @@ export default function (data) {
       periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
 
       console.log(
-        "I1 sale ",
+        "I5 sale ",
         saleDate //,
         // "MACD ",
         // Math.trunc(curMACD * 100) / 100,
@@ -56,22 +57,14 @@ export default function (data) {
       );
     }
 
-    if (prevLifeTime === 0 && curLifeTime === 2 && buyDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.start = {
-        time: startDate,
-      };
-      console.log("I1 start ", startDate);
-    }
-
-    if (prevMACD < prevSignal && curMACD > curSignal && startDate !== null) {
+    if (((prevLifeTime === 0 && curLifeTime === 1) || (prevLifeTime === 2 && curLifeTime === 1)) && buyDate === null) {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
         price: data[i][close],
       };
       startDate = null;
-      console.log("I1 buy ", buyDate);
+      console.log("I5 buy ", buyDate);
     }
   }
 
