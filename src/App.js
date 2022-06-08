@@ -41,9 +41,19 @@ function App() {
         case "MACD":
           setPeriods1(algorithm1(filteredData));
           setPeriods2(algorithm2(filteredData));
+          setPeriodsI1([]);
+          setPeriodsI2([]);
+          setPeriodsI3([]);
+          setPeriodsI4([]);
+          setPeriodsI5([]);
+          setPeriodsI6([]);
+          setPeriodsI1a([]);
+          setPeriodsI2a([]);
           break;
 
         case "Ichimoku":
+          setPeriods1([]);
+          setPeriods2([]);
           setPeriodsI1(I1(filteredData));
           setPeriodsI2(I2(filteredData));
           setPeriodsI3(I3(filteredData));
@@ -57,7 +67,7 @@ function App() {
           break;
       }
     }
-  }, [filteredData]);
+  }, [filteredData, indicator]);
 
   const filterData = (e) => {
     e.preventDefault();
@@ -176,7 +186,7 @@ function App() {
       )}
       {!!periodsI2a.length && (
         <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 2</h3>
+          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 2a</h3>
           <h4>Файл - {title}</h4>
           <p>
             - Запуск Ichimoku Long-Open <br />
