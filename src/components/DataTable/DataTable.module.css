@@ -4,6 +4,11 @@ table {
   /* margin-top: 40px; */
 }
 
+.header {
+  position: sticky;
+  top: 0px;
+}
+
 table th {
   background-color: rgb(181, 227, 255);
 }

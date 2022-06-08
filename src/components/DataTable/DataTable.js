@@ -4,7 +4,7 @@ import s from "./DataTable.module.css";
 export default function UsersTable({ data }) {
   return data !== undefined ? (
     <table>
-      <thead>
+      <thead className={s.header}>
         <tr key="0">
           {data[0].map((header, i) => (
             <th key={i}>{header.trim()}</th>
