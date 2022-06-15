@@ -34,7 +34,7 @@ export default function FileInput({ setData, setError, setTitle }) {
         </label>
         <input className={s.fileInput} type="file" id="file-input" ref={fileInput} />
       </form>
-      {isUploaded && <p style={{ color: "green", marginTop: "0px" }}>File uploaded</p>}
+      {isUploaded && <p style={{ color: "green", marginTop: "0px" }}>Файл загружен</p>}
     </>
   );
 }
