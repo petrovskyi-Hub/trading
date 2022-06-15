@@ -15,11 +15,13 @@ function MACD({ filteredData, title, setError }) {
 
     if (MACDIndex === -1 || SignalIndex === -1 || EMAIndex === -1) {
       setError("В файле нет нужных данных");
+      setPeriods1([]);
+      setPeriods2([]);
     } else {
       setPeriods1(algorithm1(filteredData));
       setPeriods2(algorithm2(filteredData));
     }
-  }, [filteredData]);
+  }, [filteredData, setError]);
 
   return (
     <>
