@@ -6,6 +6,7 @@ import s from "./FileInput.module.css";
 export default function FileInput({ setData, setError, setTitle }) {
   const fileInput = createRef();
   const [isUploaded, setIsUploaded] = useState(false);
+  const [fileName, setFileName] = useState("");
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -13,6 +14,7 @@ export default function FileInput({ setData, setError, setTitle }) {
 
     if (fileInput?.current?.files[0]) {
       setTitle(fileInput?.current?.files[0].name);
+      setFileName(fileInput?.current?.files[0].name);
       Papa.parse(fileInput?.current?.files[0], {
         complete: function (results) {
           if (results.errors.length) {
@@ -29,12 +31,12 @@ export default function FileInput({ setData, setError, setTitle }) {
   return (
     <>
       <form className={s.fileInputForm} onChange={handleChange}>
-        <label className={s.fileInputLabel} htmlFor="file-input">
+        <label className={s.fileInputLabel}>
           Import csv file
+          <input className={s.fileInput} type="file" ref={fileInput} />
         </label>
-        <input className={s.fileInput} type="file" id="file-input" ref={fileInput} />
       </form>
-      {isUploaded && <p style={{ color: "green", marginTop: "0px" }}>Файл загружен</p>}
+      {isUploaded && <p style={{ color: "green", marginTop: "0px" }}>Загружен файл {fileName}</p>}
     </>
   );
 }

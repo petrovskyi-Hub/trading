@@ -20,7 +20,7 @@ const calcStats = (periods) => {
   const cleanPercentage = sumPercentage - periods.length * 0.2;
 
   return (
-    <>
+    <div className={s.statsBox}>
       <p>
         <span>Суммарный % всех сделок: </span>
         <span className={sumPercentage > 0 ? s.positive : s.negative}>
@@ -38,7 +38,7 @@ const calcStats = (periods) => {
       <p>
         <span>Средний % прибыльных/убыточных сделок: </span>
         <span className={s.positive} style={{ marginRight: "10px" }}>
-          {(profitP / counterP).toFixed(0)}
+          {counterP !== 0 ? (profitP / counterP).toFixed(0) : 0}
         </span>
         <span className={s.negative}>{counterN !== 0 ? (profitN / counterN).toFixed(0).slice(1) : 0}</span>
       </p>
@@ -50,9 +50,9 @@ const calcStats = (periods) => {
         {((counterN / periods.length) * 100).toFixed(0)}
       </p>
       <p>
-        Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(0).slice(1)}</span>
+        Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(0).slice(1) || 0}</span>
       </p>
-    </>
+    </div>
   );
 };
 

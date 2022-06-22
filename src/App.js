@@ -1,19 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import s from "./App.module.css";
 import FileInput from "./components/FileInput";
 import DataTable from "./components/DataTable";
-import DealTable from "./components/DealTable/DealTable";
-import { algorithm1 } from "./services/algorithm1.1";
-import { algorithm2 } from "./services/algorithm2.1";
-
-import I1 from "./services/Ichimoku1";
-import I2 from "./services/Ichimoku2";
-import I3 from "./services/Ichimoku3";
-import I4 from "./services/Ichimoku4";
-import I5 from "./services/Ichimoku5";
-import I6 from "./services/Ichimoku6";
-import I1a from "./services/Ichimoku1a";
-import I2a from "./services/Ichimoku2a";
+import MACD from "./components/MACD/MACD";
+import Ichimoku from "./components/Ichimoku/Ichimoku";
+import Pulse from "./components/Pulse/Pulse";
 
 function App() {
   const [data, setData] = useState([]);
@@ -21,53 +12,14 @@ function App() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
   const [indicator, setIndicator] = useState("MACD");
+  const [strategy, setStrategy] = useState("1");
+  const [TPPercentage, setTPPercentage] = useState(1);
+  const [SLPercentage, setSLPercentage] = useState(1);
+  const [showTable, setShowTable] = useState(false);
+  const [BTCdata, setBTCData] = useState([]);
+  const [BTCFileName, setBTCFileName] = useState("");
 
-  const [periods1, setPeriods1] = useState([]);
-  const [periods2, setPeriods2] = useState([]);
-
-  const [periodsI1, setPeriodsI1] = useState([]);
-  const [periodsI2, setPeriodsI2] = useState([]);
-  const [periodsI3, setPeriodsI3] = useState([]);
-  const [periodsI4, setPeriodsI4] = useState([]);
-  const [periodsI5, setPeriodsI5] = useState([]);
-  const [periodsI6, setPeriodsI6] = useState([]);
-  const [periodsI1a, setPeriodsI1a] = useState([]);
-  const [periodsI2a, setPeriodsI2a] = useState([]);
-
-  useEffect(() => {
-    if (filteredData.length) {
-      // console.log("results", { filteredData });
-      switch (indicator) {
-        case "MACD":
-          setPeriods1(algorithm1(filteredData));
-          setPeriods2(algorithm2(filteredData));
-          setPeriodsI1([]);
-          setPeriodsI2([]);
-          setPeriodsI3([]);
-          setPeriodsI4([]);
-          setPeriodsI5([]);
-          setPeriodsI6([]);
-          setPeriodsI1a([]);
-          setPeriodsI2a([]);
-          break;
-
-        case "Ichimoku":
-          setPeriods1([]);
-          setPeriods2([]);
-          setPeriodsI1(I1(filteredData));
-          setPeriodsI2(I2(filteredData));
-          setPeriodsI3(I3(filteredData));
-          setPeriodsI4(I4(filteredData));
-          setPeriodsI5(I5(filteredData));
-          setPeriodsI6(I6(filteredData));
-          setPeriodsI1a(I1a(filteredData));
-          setPeriodsI2a(I2a(filteredData));
-          break;
-        default:
-          break;
-      }
-    }
-  }, [filteredData, indicator]);
+  const doubleFiles = ["6", "7", "9"];
 
   const filterData = (e) => {
     e.preventDefault();
@@ -77,17 +29,17 @@ function App() {
     const startDate = formData.startDate === "" ? new Date(0) : new Date(formData.startDate);
     const endDate = formData.endDate === "" ? new Date() : new Date(formData.endDate);
     // console.log("startDate ", startDate, "endDate ", endDate);
-    console.log(
-      "startDate ",
-      new Date(Number(data[1][0]) * 1000),
-      "endDate ",
-      new Date(Number(data[data.length - 1][0]) * 1000)
-    );
+    // console.log(
+    //   "startDate ",
+    //   new Date(Number(data[1][0]) * 1000),
+    //   "endDate ",
+    //   new Date(Number(data[data.length - 1][0]) * 1000)
+    // );
     if (startDate < new Date(Number(data[1][0]) * 1000)) {
-      setError("File has less period then filter");
+      setError("Файл имеет меньший период чем выбран в фильтре");
     }
     if (endDate > new Date(Number(data[data.length - 1][0]) * 1000)) {
-      setError("File has less period then filter");
+      setError("Файл имеет меньший период чем выбран в фильтре");
     }
 
     const fData = data.filter((row, i) => {
@@ -98,18 +50,118 @@ function App() {
     setFilteredData(fData);
   };
 
+  const filterDouble = (e) => {
+    e.preventDefault();
+    setError("");
+    const formData = Object.fromEntries(new FormData(e.target).entries());
+
+    const startDate = formData.startDate === "" ? new Date(0) : new Date(formData.startDate);
+    const endDate = formData.endDate === "" ? new Date() : new Date(formData.endDate);
+    // console.log("startDate ", startDate, "endDate ", endDate);
+    // console.log(
+    //   "startDate ",
+    //   new Date(Number(data[1][0]) * 1000),
+    //   "endDate ",
+    //   new Date(Number(data[data.length - 1][0]) * 1000)
+    // );
+    if (startDate < new Date(Number(data[1][0]) * 1000)) {
+      setError("Первый файл имеет меньший период чем выбран в фильтре");
+    }
+    if (endDate > new Date(Number(data[data.length - 1][0]) * 1000)) {
+      setError("Первый файл имеет меньший период чем выбран в фильтре");
+    }
+    if (startDate < new Date(Number(BTCdata[1][0]) * 1000)) {
+      setError("Второй файл имеет меньший период чем выбран в фильтре");
+    }
+    if (endDate > new Date(Number(BTCdata[BTCdata.length - 1][0]) * 1000)) {
+      setError("Второй файл имеет меньший период чем выбран в фильтре");
+    }
+
+    const fData = data.filter((row, i) => {
+      const rowDate = new Date(Number(row[0]) * 1000);
+      return i === 0 || (startDate <= rowDate && rowDate <= endDate);
+    });
+
+    const fBTCData = BTCdata.filter((row, i) => {
+      const rowDate = new Date(Number(row[0]) * 1000);
+      return i === 0 || (startDate <= rowDate && rowDate <= endDate);
+    });
+
+    if (fData.length !== fBTCData.length) {
+      setError("fData.length !== fBTCData.length");
+    }
+
+    const closeIndex = fBTCData[0].indexOf("close");
+    const EMAIndex = fBTCData[0].indexOf("EMA");
+
+    const unionData = fData.map((el, i) =>
+      i === 0 ? [...el, "closeBTC", "EMA"] : [...el, fBTCData[i][closeIndex], fBTCData[i][EMAIndex]]
+    );
+    // console.log("🚀 unionData", unionData);
+    setFilteredData(unionData);
+  };
+
   return (
     <div className={s.App}>
       {/* {console.log(periods)} */}
       <FileInput setData={setData} setError={setError} setTitle={setTitle} />
-      <label htmlFor="start">
-        <span className={s.indicatorLabel}>Выберите индикатор</span>
+      <label>
+        <span className={s.label}>Выберите индикатор</span>
         <select value={indicator} onChange={(e) => setIndicator(e.target.value)}>
           <option value="MACD">MACD</option>
           <option value="Ichimoku">MACD + Ichimoku</option>
+          <option value="Pulse">Импульсные</option>
         </select>
       </label>
-      <form className={s.filter} onSubmit={filterData}>
+      {indicator === "Pulse" && (
+        <>
+          <label className={s.strategyLabel}>
+            <span className={s.label}>Выберите стратегию</span>
+            <select value={strategy} onChange={(e) => setStrategy(e.target.value)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+          </label>
+          <div style={{ marginTop: "5px" }}>
+            <label>
+              <span className={s.label}>Введите TP%</span>
+              <input
+                style={{ width: "50px" }}
+                type="number"
+                value={TPPercentage}
+                step="0.5"
+                onChange={(e) => setTPPercentage(e.target.value)}
+                min="0.5"
+              />
+            </label>
+            <label className={s.strategyLabel}>
+              <span className={s.label}>Введите SL%</span>
+              <input
+                style={{ width: "50px" }}
+                type="number"
+                value={SLPercentage}
+                step="0.5"
+                onChange={(e) => setSLPercentage(e.target.value)}
+                min="0"
+              />
+            </label>
+          </div>
+          {(strategy === "6" || strategy === "7") && (
+            <>
+              <p style={{ marginTop: "20px" }}>Загрузите файл с данными о BTC</p>
+              <FileInput setData={setBTCData} setError={setError} setTitle={setBTCFileName} />
+            </>
+          )}
+        </>
+      )}
+      <form className={s.filter} onSubmit={doubleFiles.indexOf(strategy) === -1 ? filterData : filterDouble}>
         <label htmlFor="start" className={s.filterLabel}>
           Start date
         </label>
@@ -125,181 +177,29 @@ function App() {
           {error}
         </p>
       )}
-
-      {!!periods1.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм 1.1</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка MACD снизу-вверх Signal (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periods1)}
-          <DealTable periods={periods1} />
-        </>
+      {filteredData.length > 0 && indicator === "MACD" && (
+        <MACD filteredData={filteredData} title={title} setError={setError} />
       )}
-      {!!periods2.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм 2.1</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка MACD снизу-вверх EMA (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periods2)}
-          <DealTable periods={periods2} />
-        </>
+      {filteredData.length > 0 && indicator === "Ichimoku" && (
+        <Ichimoku filteredData={filteredData} title={title} setError={setError} />
       )}
-      {!!periodsI1.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 1</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Запуск Ichimoku Short-Close <br />
-            - Покупка MACD снизу-вверх Signal (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periodsI1)}
-          <DealTable periods={periodsI1} />
-        </>
+      {filteredData.length > 0 && indicator === "Pulse" && (
+        <Pulse
+          filteredData={filteredData}
+          title={title}
+          strategy={strategy}
+          TPPercentage={TPPercentage}
+          SLPercentage={SLPercentage}
+          setError={setError}
+        />
       )}
-      {!!periodsI1a.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 1a</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Запуск Ichimoku Short-Close <br />
-            - Покупка MACD снизу-вверх EMA (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periodsI1a)}
-          <DealTable periods={periodsI1a} />
-        </>
-      )}
-      {!!periodsI2.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 2</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Запуск Ichimoku Long-Open <br />
-            - Покупка MACD снизу-вверх Signal (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periodsI2)}
-          <DealTable periods={periodsI2} />
-        </>
-      )}
-      {!!periodsI2a.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 2a</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Запуск Ichimoku Long-Open <br />
-            - Покупка MACD снизу-вверх EMA (на закр бара) <br />- Продажа MACD сверху-вниз Signal (на закр бара)
-          </p>
-          {calcStats(periodsI2a)}
-          <DealTable periods={periodsI2a} />
-        </>
-      )}
-      {!!periodsI3.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 3</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка Ichimoku Short-Close (на закр бара) <br />- Продажа Ichimoku Short-Open (на закр бара)
-          </p>
-          {calcStats(periodsI3)}
-          <DealTable periods={periodsI3} />
-        </>
-      )}
-      {!!periodsI4.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 4</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка Ichimoku Short-Close (на закр бара) <br />- Продажа Ichimoku Long-Close (на закр бара)
-          </p>
-          {calcStats(periodsI4)}
-          <DealTable periods={periodsI4} />
-        </>
-      )}
-      {!!periodsI5.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 5</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка Ichimoku Long-Open (на закр бара) <br />- Продажа Ichimoku Short-Open (на закр бара)
-          </p>
-          {calcStats(periodsI5)}
-          <DealTable periods={periodsI5} />
-        </>
-      )}
-      {!!periodsI6.length && (
-        <>
-          <h3 style={{ textAlign: "center" }}>Алгоритм Ichimoku 6</h3>
-          <h4>Файл - {title}</h4>
-          <p>
-            - Покупка Ichimoku Long-Open (на закр бара) <br />- Продажа Ichimoku Long-Close (на закр бара)
-          </p>
-          {calcStats(periodsI6)}
-          <DealTable periods={periodsI6} />
-        </>
-      )}
-
-      {/* {filteredData.length > 0 && <DataTable data={filteredData} />} */}
+      <label>
+        <span>Показать таблицу</span>
+        <input type="checkbox" value={showTable} onChange={(e) => setShowTable(e.target.checked)}></input>
+      </label>
+      {filteredData.length > 0 && showTable && <DataTable data={filteredData} />}
     </div>
   );
 }
-
-const calcStats = (periods) => {
-  let counterP = 0;
-  let profitP = 0;
-  let profitN = 0;
-  let counterN = 0;
-
-  for (let period of periods) {
-    if (period.profit > 0) {
-      profitP += Number(period.profit);
-      counterP += 1;
-    } else {
-      profitN += Number(period.profit);
-      counterN += 1;
-    }
-  }
-
-  const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
-  const cleanPercentage = sumPercentage - periods.length * 0.2;
-
-  return (
-    <>
-      <p>
-        <span>Суммарный % всех сделок: </span>
-        <span className={sumPercentage > 0 ? s.positive : s.negative}>
-          {/* {sumPercentage > 0 ? "+" : "-"} */}
-          {sumPercentage.toFixed(0)}
-        </span>
-      </p>
-      <p>
-        <span>Чистая прибыль %: </span>
-        <span className={cleanPercentage > 0 ? s.positive : s.negative}>
-          {/* {sumPercentage > 0 ? "+" : "-"} */}
-          {cleanPercentage.toFixed(0)}
-        </span>
-      </p>
-      <p>
-        <span>Средний % прибыльных/убыточных сделок: </span>
-        <span className={s.positive} style={{ marginRight: "10px" }}>
-          {(profitP / counterP).toFixed(0)}
-        </span>
-        <span className={s.negative}>{counterN !== 0 ? (profitN / counterN).toFixed(0).slice(1) : 0}</span>
-      </p>
-      <p>
-        Общее количество сделок/прибыльных/убыточных: {periods.length}/{counterP}/{counterN}
-      </p>
-      <p>
-        Соотношение сделок в % прибыльных/убыточных: {((counterP / periods.length) * 100).toFixed(0)}/
-        {((counterN / periods.length) * 100).toFixed(0)}
-      </p>
-      <p>
-        Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(0).slice(1)}</span>
-      </p>
-    </>
-  );
-};
 
 export default App;

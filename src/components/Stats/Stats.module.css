@@ -5,3 +5,11 @@
 .negative {
     color: red;
 }
+.statsBox{
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+p {
+    margin: 0;
+}

@@ -48,6 +48,10 @@ h3 {
   margin-top: 40px;
 }
 
-.indicatorLabel {
+.label {
   margin-right: 5px;
+}
+
+.strategyLabel {
+  margin-left: 15px;
 }
