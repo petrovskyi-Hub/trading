@@ -552,7 +552,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       period.hStart = {
         time: hStartDate,
       };
-      console.log("P6 hStart ", hStartDate);
+      console.log("P7 hStart ", hStartDate);
     }
 
     if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
@@ -562,7 +562,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       };
       hStartDate = null;
       startDate = null;
-      console.log("P6 hStop ", hStopDate);
+      console.log("P7 hStop ", hStopDate);
     }
 
     if (prevK < 20 && curK > 20 && hStartDate !== null && buyDate === null) {
@@ -672,6 +672,119 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
       };
       startDate = null;
       console.log("P8 buy ", buyDate);
+    }
+  }
+
+  return periods;
+};
+
+export const P9 = (data, TPPercentage, SLPercentage) => {
+  const MACDIndex = data[0].indexOf("MACD");
+  const SignalIndex = data[0].indexOf("Signal");
+  const EMAIndex = data[0].indexOf("EMA");
+  const PSARIndex = data[0].indexOf("ParabolicSAR");
+
+  // const open = data[0].indexOf("open");
+  const close = data[0].indexOf("close");
+  const closeBTC = data[0].indexOf("closeBTC");
+
+  // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
+  let hStartDate = null;
+  let hStopDate = null;
+  let startDate = null;
+  let stopDate = null;
+  let buyDate = null;
+  let saleDate = null;
+  const period = {
+    hStart: null,
+    hStop: null,
+    start: null,
+    stop: null,
+    buy: null,
+    sale: null,
+  };
+
+  const periods = [];
+
+  console.log("algorithm P9");
+
+  for (let i = 2; i < data.length; i++) {
+    const prevPrice = Number(data[i - 1][close]);
+    const curPrice = Number(data[i][close]);
+    const prevMACD = Number(data[i - 1][MACDIndex]);
+    const curMACD = Number(data[i][MACDIndex]);
+    const prevSignal = Number(data[i - 1][SignalIndex]);
+    const curSignal = Number(data[i][SignalIndex]);
+    const prevPSAR = Number(data[i - 1][PSARIndex]);
+    const curPSAR = Number(data[i][PSARIndex]);
+    const prevEMA = Number(data[i - 1][EMAIndex]);
+    const curEMA = Number(data[i][EMAIndex]);
+    const prevPriceBTC = Number(data[i - 1][closeBTC]);
+    const curPriceBTC = Number(data[i][closeBTC]);
+
+    const isSale =
+      SLPercentage === "0"
+        ? buyDate !== null && curPrice >= period.buy.price * (1 + TPPercentage / 100)
+        : buyDate !== null &&
+          (curPrice >= period.buy.price * (1 + TPPercentage / 100) ||
+            curPrice <= period.buy.price * (1 - SLPercentage / 100));
+
+    if (isSale) {
+      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.sale = {
+        time: saleDate,
+        price: curPrice,
+      };
+      buyDate = null;
+      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      periods.push({ ...period });
+
+      console.log("P9 sale ", saleDate);
+    }
+
+    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
+      hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.hStart = {
+        time: hStartDate,
+      };
+      console.log("P9 hStart ", hStartDate);
+    }
+
+    if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
+      hStopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.hStop = {
+        time: hStopDate,
+      };
+      hStartDate = null;
+      startDate = null;
+      console.log("P9 hStop ", hStopDate);
+    }
+
+    if (prevMACD < prevSignal && curMACD > curSignal && hStartDate !== null && buyDate === null) {
+      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.start = {
+        time: startDate,
+      };
+      console.log("P9 start ", startDate);
+    }
+
+    if (prevMACD > prevSignal && curMACD < curSignal && startDate !== null) {
+      stopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.stop = {
+        time: stopDate,
+      };
+      startDate = null;
+      console.log("P9 stop ", stopDate);
+    }
+
+    if (prevPSAR > prevPrice && curPSAR < curPrice && startDate !== null) {
+      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.buy = {
+        time: buyDate,
+        price: curPrice,
+      };
+      startDate = null;
+      console.log("P9 buy ", buyDate);
     }
   }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
-import { P1, P2, P3, P4, P5, P6, P7, P8 } from "../../services/Pulses1-9";
+import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/Pulses1-9";
 
 function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
   const [periods, setPeriods] = useState([]);
@@ -145,6 +145,25 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
             <p>
               - Запуск EMA(эксп) 200 пересекает снизу-вверх график цены <br />
               - Остановка цена пересекает сверху-вниз EMA (эксп) 200 <br />
+              - Покупка график цены пересекает снизу-вверх Parabolic SAR <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt;
+              - Х% (на закр бара)
+            </p>
+          );
+        }
+        break;
+
+      case "9":
+        if (MACDIndex === -1 || PSARIndex === -1 || EMAIndex === -1) {
+          setError("В файле нет нужных данных");
+          setPeriods([]);
+        } else {
+          setPeriods(P9(filteredData, TPPercentage, SLPercentage));
+          setDescription(
+            <p>
+              - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
+              - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
+              - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
+              - Остановка MACD 12/26 пересекает сверху-вниз Signal <br />
               - Покупка график цены пересекает снизу-вверх Parabolic SAR <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt;
               - Х% (на закр бара)
             </p>

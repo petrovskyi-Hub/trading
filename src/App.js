@@ -158,7 +158,7 @@ function App() {
               />
             </label>
           </div>
-          {(strategy === "6" || strategy === "7") && (
+          {doubleFiles.indexOf(strategy) !== -1 && (
             <>
               <p style={{ marginTop: "20px" }}>Загрузите файл с данными о BTC</p>
               <FileInput setData={setBTCData} setError={setError} setTitle={setBTCFileName} />
