@@ -488,16 +488,22 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
   const MACDIndex = data[0].indexOf("MACD");
   const SignalIndex = data[0].indexOf("Signal");
   const KIndex = data[0].indexOf("K");
+  const EMAIndex = data[0].indexOf("EMA");
 
   // const open = data[0].indexOf("open");
   const close = data[0].indexOf("close");
+  const closeBTC = data[0].indexOf("closeBTC");
 
   // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
+  let hStartDate = null;
+  let hStopDate = null;
   let startDate = null;
   let stopDate = null;
   let buyDate = null;
   let saleDate = null;
   const period = {
+    hStart: null,
+    hStop: null,
     start: null,
     stop: null,
     buy: null,
@@ -506,7 +512,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P7b");
+  console.log("algorithm P7");
 
   for (let i = 2; i < data.length; i++) {
     const curPrice = Number(data[i][close]);
@@ -516,6 +522,10 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
     const curSignal = Number(data[i][SignalIndex]);
     const prevK = Number(data[i - 1][KIndex]);
     const curK = Number(data[i][KIndex]);
+    const prevEMA = Number(data[i - 1][EMAIndex]);
+    const curEMA = Number(data[i][EMAIndex]);
+    const prevPriceBTC = Number(data[i - 1][closeBTC]);
+    const curPriceBTC = Number(data[i][closeBTC]);
 
     const isSale =
       SLPercentage === "0"
@@ -534,15 +544,33 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P7b sale ", saleDate);
+      console.log("P7 sale ", saleDate);
     }
 
-    if (prevK < 20 && curK > 20 && (buyDate === null || isSale)) {
+    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
+      hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.hStart = {
+        time: hStartDate,
+      };
+      console.log("P6 hStart ", hStartDate);
+    }
+
+    if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
+      hStopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      period.hStop = {
+        time: hStopDate,
+      };
+      hStartDate = null;
+      startDate = null;
+      console.log("P6 hStop ", hStopDate);
+    }
+
+    if (prevK < 20 && curK > 20 && hStartDate !== null && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.start = {
         time: startDate,
       };
-      console.log("P7b start ", startDate);
+      console.log("P7 start ", startDate);
     }
 
     if (prevK < 80 && curK > 80 && startDate !== null) {
@@ -551,7 +579,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P7b stop ", stopDate);
+      console.log("P7 stop ", stopDate);
     }
 
     if (prevMACD < prevSignal && curMACD > curSignal && startDate !== null) {
@@ -561,7 +589,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       startDate = null;
-      console.log("P7b buy ", buyDate);
+      console.log("P7 buy ", buyDate);
     }
   }
 

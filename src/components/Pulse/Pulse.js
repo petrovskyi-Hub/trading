@@ -116,24 +116,24 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
         }
         break;
 
-      // case "7":
-      //   if (MACDIndex === -1 || KIndex === -1 || EMAIndex === -1) {
-      //     setError("В файле нет нужных данных");
-      //     setPeriods([]);
-      //   } else {
-      //     setPeriods(P7(filteredData, TPPercentage, SLPercentage));
-      //     setDescription(
-      //       <p>
-      //         - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
-      //         - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
-      //         - Запуск Stoch RSI пересекает снизу-вверх уровень 20 <br />
-      //         - Остановка Stoch RSI пересекает снизу-вверх уровень 80 <br />
-      //         - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
-      //         (на закр бара)
-      //       </p>
-      //     );
-      //   }
-      //   break;
+      case "7":
+        if (MACDIndex === -1 || KIndex === -1 || EMAIndex === -1) {
+          setError("В файле нет нужных данных");
+          setPeriods([]);
+        } else {
+          setPeriods(P7(filteredData, TPPercentage, SLPercentage));
+          setDescription(
+            <p>
+              - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
+              - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
+              - Запуск Stoch RSI пересекает снизу-вверх уровень 20 <br />
+              - Остановка Stoch RSI пересекает снизу-вверх уровень 80 <br />
+              - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
+              (на закр бара)
+            </p>
+          );
+        }
+        break;
 
       case "8":
         if (EMAIndex === -1 || PSARIndex === -1) {
