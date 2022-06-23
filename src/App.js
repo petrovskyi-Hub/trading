@@ -64,6 +64,11 @@ function App() {
     //   "endDate ",
     //   new Date(Number(data[data.length - 1][0]) * 1000)
     // );
+    if (data.length === 0 || BTCdata.length === 0) {
+      setError("Нет данных в файле");
+      return;
+    }
+
     if (startDate < new Date(Number(data[1][0]) * 1000)) {
       setError("Первый файл имеет меньший период чем выбран в фильтре");
     }

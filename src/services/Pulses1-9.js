@@ -372,11 +372,11 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
   return periods;
 };
 
-export const P6 = (data, percentage) => {
+export const P6 = (data, TPPercentage, SLPercentage) => {
   const MACDIndex = data[0].indexOf("MACD");
   const SignalIndex = data[0].indexOf("Signal");
   const KIndex = data[0].indexOf("K");
-  const EMAIndex = data[0].indexOf("EMA", 6);
+  const EMAIndex = data[0].indexOf("EMA");
 
   // const open = data[0].indexOf("open");
   const close = data[0].indexOf("close");
@@ -416,8 +416,11 @@ export const P6 = (data, percentage) => {
     const curPriceBTC = Number(data[i][closeBTC]);
 
     const isSale =
-      buyDate !== null &&
-      (curPrice >= period.buy.price * (1 + percentage / 100) || curPrice <= period.buy.price * (1 - percentage / 100));
+      SLPercentage === "0"
+        ? buyDate !== null && curPrice >= period.buy.price * (1 + TPPercentage / 100)
+        : buyDate !== null &&
+          (curPrice >= period.buy.price * (1 + TPPercentage / 100) ||
+            curPrice <= period.buy.price * (1 - SLPercentage / 100));
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
@@ -432,7 +435,7 @@ export const P6 = (data, percentage) => {
       console.log("P6 sale ", saleDate);
     }
 
-    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && (buyDate === null || isSale)) {
+    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
       hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStart = {
         time: hStartDate,
@@ -450,7 +453,7 @@ export const P6 = (data, percentage) => {
       console.log("P6 hStop ", hStopDate);
     }
 
-    if (prevMACD < prevSignal && curMACD > curSignal && hStartDate !== null) {
+    if (prevMACD < prevSignal && curMACD > curSignal && hStartDate !== null && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.start = {
         time: startDate,
@@ -463,7 +466,6 @@ export const P6 = (data, percentage) => {
       period.stop = {
         time: stopDate,
       };
-      hStartDate = null;
       startDate = null;
       console.log("P6 stop ", stopDate);
     }
@@ -474,7 +476,6 @@ export const P6 = (data, percentage) => {
         time: buyDate,
         price: curPrice,
       };
-      hStartDate = null;
       startDate = null;
       console.log("P6 buy ", buyDate);
     }
@@ -483,85 +484,7 @@ export const P6 = (data, percentage) => {
   return periods;
 };
 
-export const P7a = (data, percentage) => {
-  const MACDIndex = data[0].indexOf("MACD");
-  const SignalIndex = data[0].indexOf("Signal");
-  const KIndex = data[0].indexOf("K");
-
-  // const open = data[0].indexOf("open");
-  const close = data[0].indexOf("close");
-
-  // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
-  let startDate = null;
-  let stopDate = null;
-  let buyDate = null;
-  let saleDate = null;
-  const period = {
-    start: null,
-    stop: null,
-    buy: null,
-    sale: null,
-  };
-
-  const periods = [];
-
-  console.log("algorithm P7a");
-
-  for (let i = 2; i < data.length; i++) {
-    const curPrice = Number(data[i][close]);
-    const prevMACD = Number(data[i - 1][MACDIndex]);
-    const curMACD = Number(data[i][MACDIndex]);
-    const prevSignal = Number(data[i - 1][SignalIndex]);
-    const curSignal = Number(data[i][SignalIndex]);
-    const prevK = Number(data[i - 1][KIndex]);
-    const curK = Number(data[i][KIndex]);
-
-    const isSale = buyDate !== null && curPrice >= period.buy.price * (1 + percentage / 100);
-    if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.sale = {
-        time: saleDate,
-        price: curPrice,
-      };
-      buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
-      periods.push({ ...period });
-
-      console.log("P7a sale ", saleDate);
-    }
-
-    if (prevK < 20 && curK > 20 && (buyDate === null || isSale)) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.start = {
-        time: startDate,
-      };
-      console.log("P7a start ", startDate);
-    }
-
-    if (prevK < 80 && curK > 80 && startDate !== null) {
-      stopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.stop = {
-        time: stopDate,
-      };
-      startDate = null;
-      console.log("P7a stop ", stopDate);
-    }
-
-    if (prevMACD < prevSignal && curMACD > curSignal && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
-      period.buy = {
-        time: buyDate,
-        price: curPrice,
-      };
-      startDate = null;
-      console.log("P7a buy ", buyDate);
-    }
-  }
-
-  return periods;
-};
-
-export const P7b = (data, percentage) => {
+export const P7 = (data, TPPercentage, SLPercentage) => {
   const MACDIndex = data[0].indexOf("MACD");
   const SignalIndex = data[0].indexOf("Signal");
   const KIndex = data[0].indexOf("K");
@@ -595,8 +518,11 @@ export const P7b = (data, percentage) => {
     const curK = Number(data[i][KIndex]);
 
     const isSale =
-      buyDate !== null &&
-      (curPrice >= period.buy.price * (1 + percentage / 100) || curPrice <= period.buy.price * (1 - percentage / 100));
+      SLPercentage === "0"
+        ? buyDate !== null && curPrice >= period.buy.price * (1 + TPPercentage / 100)
+        : buyDate !== null &&
+          (curPrice >= period.buy.price * (1 + TPPercentage / 100) ||
+            curPrice <= period.buy.price * (1 - SLPercentage / 100));
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();

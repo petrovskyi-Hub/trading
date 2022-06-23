@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
-import { P1, P2, P3, P4, P5, P6, P7b, P8 } from "../../services/Pulses1-9";
+import { P1, P2, P3, P4, P5, P6, P7, P8 } from "../../services/Pulses1-9";
 
 function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
   const [periods, setPeriods] = useState([]);
@@ -116,30 +116,16 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
         }
         break;
 
-      // case "7A":
-      //   if (MACDIndex === -1 || KIndex === -1) {
+      // case "7":
+      //   if (MACDIndex === -1 || KIndex === -1 || EMAIndex === -1) {
       //     setError("В файле нет нужных данных");
       //     setPeriods([]);
       //   } else {
-      //     setPeriods(P7b(filteredData, percentage));
+      //     setPeriods(P7(filteredData, TPPercentage, SLPercentage));
       //     setDescription(
       //       <p>
-      //         - Запуск Stoch RSI пересекает снизу-вверх уровень 20 <br />
-      //         - Остановка Stoch RSI пересекает снизу-вверх уровень 80 <br />
-      //         - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal <br />- Продажа TP=&gt; +Х% (на закр бара)
-      //       </p>
-      //     );
-      //   }
-      //   break;
-
-      // case "7B":
-      //   if (MACDIndex === -1 || KIndex === -1) {
-      //     setError("В файле нет нужных данных");
-      //     setPeriods([]);
-      //   } else {
-      //     setPeriods(P7b(filteredData, percentage));
-      //     setDescription(
-      //       <p>
+      //         - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
+      //         - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
       //         - Запуск Stoch RSI пересекает снизу-вверх уровень 20 <br />
       //         - Остановка Stoch RSI пересекает снизу-вверх уровень 80 <br />
       //         - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
