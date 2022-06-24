@@ -5,6 +5,7 @@ import DataTable from "./components/DataTable";
 import MACD from "./components/MACD/MACD";
 import Ichimoku from "./components/Ichimoku/Ichimoku";
 import Pulse from "./components/Pulse/Pulse";
+import PulseBTC from "./components/PulseBTC/PulseBTC";
 
 function App() {
   const [data, setData] = useState([]);
@@ -17,9 +18,6 @@ function App() {
   const [SLPercentage, setSLPercentage] = useState(1);
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
-  const [BTCFileName, setBTCFileName] = useState("");
-
-  const doubleFiles = ["6", "7", "9"];
 
   const filterData = (e) => {
     e.preventDefault();
@@ -116,9 +114,10 @@ function App() {
           <option value="MACD">MACD</option>
           <option value="Ichimoku">MACD + Ichimoku</option>
           <option value="Pulse">Импульсные</option>
+          <option value="PulseBTC">Импульсные после старта ВТС</option>
         </select>
       </label>
-      {indicator === "Pulse" && (
+      {(indicator === "Pulse" || indicator === "PulseBTC") && (
         <>
           <label className={s.strategyLabel}>
             <span className={s.label}>Выберите стратегию</span>
@@ -158,15 +157,15 @@ function App() {
               />
             </label>
           </div>
-          {doubleFiles.indexOf(strategy) !== -1 && (
+          {indicator === "PulseBTC" && (
             <>
               <p style={{ marginTop: "20px" }}>Загрузите файл с данными о BTC</p>
-              <FileInput setData={setBTCData} setError={setError} setTitle={setBTCFileName} />
+              <FileInput setData={setBTCData} setError={setError} setTitle={() => null} />
             </>
           )}
         </>
       )}
-      <form className={s.filter} onSubmit={doubleFiles.indexOf(strategy) === -1 ? filterData : filterDouble}>
+      <form className={s.filter} onSubmit={indicator !== "PulseBTC" ? filterData : filterDouble}>
         <label htmlFor="start" className={s.filterLabel}>
           Start date
         </label>
@@ -190,6 +189,16 @@ function App() {
       )}
       {filteredData.length > 0 && indicator === "Pulse" && (
         <Pulse
+          filteredData={filteredData}
+          title={title}
+          strategy={strategy}
+          TPPercentage={TPPercentage}
+          SLPercentage={SLPercentage}
+          setError={setError}
+        />
+      )}
+      {filteredData.length > 0 && indicator === "PulseBTC" && (
+        <PulseBTC
           filteredData={filteredData}
           title={title}
           strategy={strategy}

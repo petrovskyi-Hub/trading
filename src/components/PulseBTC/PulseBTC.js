@@ -3,7 +3,7 @@ import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
 import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/Pulses1-9";
 
-function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
+function PulseBTC({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
   const [periods, setPeriods] = useState([]);
   const [description, setDescription] = useState();
 
@@ -25,7 +25,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setDescription(
             <p>
               - Покупка цена пересекает снизу-вверх EMA (эксп) ХХ (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
-              Loss =&gt; - Х%
+              Loss =&gt; - Х% (на закр бара)
             </p>
           );
         }
@@ -40,7 +40,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setDescription(
             <p>
               - Покупка EMA(эксп) ХХ пересекает EMA(эксп) ХХ снизу-вверх (на закр бара) <br />- Продажа TP=&gt; +Х% или
-              Stop Loss =&gt; - Х%
+              Stop Loss =&gt; - Х% (на закр бара)
             </p>
           );
         }
@@ -57,7 +57,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
               - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
               - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
-              Loss =&gt; - Х%
+              Loss =&gt; - Х% (на закр бара)
             </p>
           );
         }
@@ -74,7 +74,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск MACD ХХ/ХХ пересекает снизу-вверх Signal <br />
               - Остановка MACD ХХ/ХХ пересекает сверху-вниз Signal <br />
               - Покупка цена пересекает снизу-вверх EMA (эксп) ХХ (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
-              Loss =&gt; - Х%
+              Loss =&gt; - Х% (на закр бара)
             </p>
           );
         }
@@ -91,6 +91,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
               - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
               - Покупка Stoch RSI пересекает снизу-вверх уровень 20 <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
+              (на закр бара)
             </p>
           );
         }
@@ -109,6 +110,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск MACD ХХ/ХХ пересекает снизу-вверх Signal <br />
               - Остановка MACD ХХ/ХХ пересекает сверху-вниз Signal <br />
               - Покупка Stoch RSI пересекает снизу-вверх уровень 20 <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
+              (на закр бара)
             </p>
           );
         }
@@ -127,6 +129,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск Stoch RSI пересекает снизу-вверх уровень 20 <br />
               - Остановка Stoch RSI пересекает снизу-вверх уровень 80 <br />
               - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt; - Х%
+              (на закр бара)
             </p>
           );
         }
@@ -143,7 +146,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск EMA(эксп) 200 пересекает снизу-вверх график цены <br />
               - Остановка цена пересекает сверху-вниз EMA (эксп) 200 <br />
               - Покупка график цены пересекает снизу-вверх Parabolic SAR <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt;
-              - Х%
+              - Х% (на закр бара)
             </p>
           );
         }
@@ -162,7 +165,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
               - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
               - Остановка MACD 12/26 пересекает сверху-вниз Signal <br />
               - Покупка график цены пересекает снизу-вверх Parabolic SAR <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt;
-              - Х%
+              - Х% (на закр бара)
             </p>
           );
         }
@@ -177,7 +180,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
 
   return (
     <>
-      <h3 style={{ textAlign: "center" }}>Алгоритм {strategy}</h3>
+      <h3 style={{ textAlign: "center" }}>Алгоритм {strategy} после старта ВТС</h3>
       <h4>Файл - {title}</h4>
       {description}
       {!!periods.length && (
@@ -190,4 +193,4 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
   );
 }
 
-export default Pulse;
+export default PulseBTC;

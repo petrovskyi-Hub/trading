@@ -35,7 +35,10 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -97,7 +100,10 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -165,7 +171,10 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -250,7 +259,10 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -332,7 +344,10 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -380,7 +395,6 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
 
   // const open = data[0].indexOf("open");
   const close = data[0].indexOf("close");
-  const closeBTC = data[0].indexOf("closeBTC");
 
   // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
   let hStartDate = null;
@@ -403,6 +417,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
   console.log("algorithm P6");
 
   for (let i = 2; i < data.length; i++) {
+    const prevPrice = Number(data[i - 1][close]);
     const curPrice = Number(data[i][close]);
     const prevMACD = Number(data[i - 1][MACDIndex]);
     const curMACD = Number(data[i][MACDIndex]);
@@ -412,8 +427,6 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
     const curK = Number(data[i][KIndex]);
     const prevEMA = Number(data[i - 1][EMAIndex]);
     const curEMA = Number(data[i][EMAIndex]);
-    const prevPriceBTC = Number(data[i - 1][closeBTC]);
-    const curPriceBTC = Number(data[i][closeBTC]);
 
     const isSale =
       SLPercentage === "0"
@@ -426,7 +439,10 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -435,7 +451,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       console.log("P6 sale ", saleDate);
     }
 
-    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
+    if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
       hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStart = {
         time: hStartDate,
@@ -443,7 +459,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       console.log("P6 hStart ", hStartDate);
     }
 
-    if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
+    if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
       hStopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStop = {
         time: hStopDate,
@@ -492,7 +508,6 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
 
   // const open = data[0].indexOf("open");
   const close = data[0].indexOf("close");
-  const closeBTC = data[0].indexOf("closeBTC");
 
   // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
   let hStartDate = null;
@@ -515,6 +530,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
   console.log("algorithm P7");
 
   for (let i = 2; i < data.length; i++) {
+    const prevPrice = Number(data[i - 1][close]);
     const curPrice = Number(data[i][close]);
     const prevMACD = Number(data[i - 1][MACDIndex]);
     const curMACD = Number(data[i][MACDIndex]);
@@ -524,8 +540,6 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
     const curK = Number(data[i][KIndex]);
     const prevEMA = Number(data[i - 1][EMAIndex]);
     const curEMA = Number(data[i][EMAIndex]);
-    const prevPriceBTC = Number(data[i - 1][closeBTC]);
-    const curPriceBTC = Number(data[i][closeBTC]);
 
     const isSale =
       SLPercentage === "0"
@@ -538,7 +552,10 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -547,7 +564,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       console.log("P7 sale ", saleDate);
     }
 
-    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
+    if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
       hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStart = {
         time: hStartDate,
@@ -555,7 +572,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       console.log("P7 hStart ", hStartDate);
     }
 
-    if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
+    if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
       hStopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStop = {
         time: hStopDate,
@@ -638,7 +655,10 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -686,7 +706,6 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
 
   // const open = data[0].indexOf("open");
   const close = data[0].indexOf("close");
-  const closeBTC = data[0].indexOf("closeBTC");
 
   // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
   let hStartDate = null;
@@ -719,8 +738,6 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
     const curPSAR = Number(data[i][PSARIndex]);
     const prevEMA = Number(data[i - 1][EMAIndex]);
     const curEMA = Number(data[i][EMAIndex]);
-    const prevPriceBTC = Number(data[i - 1][closeBTC]);
-    const curPriceBTC = Number(data[i][closeBTC]);
 
     const isSale =
       SLPercentage === "0"
@@ -733,7 +750,10 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: curPrice,
+        price:
+          curPrice > period.buy.price
+            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(2)
+            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(2),
       };
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
@@ -742,7 +762,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       console.log("P9 sale ", saleDate);
     }
 
-    if (prevPriceBTC < prevEMA && curPriceBTC > curEMA && hStartDate === null) {
+    if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
       hStartDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStart = {
         time: hStartDate,
@@ -750,7 +770,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       console.log("P9 hStart ", hStartDate);
     }
 
-    if (prevPriceBTC > prevEMA && curPriceBTC < curEMA && hStartDate !== null) {
+    if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
       hStopDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.hStop = {
         time: hStopDate,
