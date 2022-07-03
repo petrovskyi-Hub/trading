@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
-import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/Pulses1-9";
+import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/Pulses1-9BTC";
 
 function PulseBTC({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
   const [periods, setPeriods] = useState([]);
@@ -24,6 +24,8 @@ function PulseBTC({ filteredData, title, strategy, TPPercentage, SLPercentage, s
           setPeriods(P1(filteredData, TPPercentage, SLPercentage));
           setDescription(
             <p>
+              - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
+              - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
               - Покупка цена пересекает снизу-вверх EMA (эксп) ХХ (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
               Loss =&gt; - Х% (на закр бара)
             </p>

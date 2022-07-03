@@ -98,9 +98,8 @@ function App() {
     const EMAIndex = fBTCData[0].indexOf("EMA");
 
     const unionData = fData.map((el, i) =>
-      i === 0 ? [...el, "closeBTC", "EMA"] : [...el, fBTCData[i][closeIndex], fBTCData[i][EMAIndex]]
+      i === 0 ? [...el, "closeBTC", "EMA_BTC"] : [...el, fBTCData[i][closeIndex], fBTCData[i][EMAIndex]]
     );
-    // console.log("🚀 unionData", unionData);
     setFilteredData(unionData);
   };
 
