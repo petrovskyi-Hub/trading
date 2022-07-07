@@ -140,7 +140,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setPeriods(P8(filteredData, TPPercentage, SLPercentage));
           setDescription(
             <p>
-              - Запуск EMA(эксп) 200 пересекает снизу-вверх график цены <br />
+              - Запуск цена пересекает снизу-вверх EMA(эксп) 200 <br />
               - Остановка цена пересекает сверху-вниз EMA (эксп) 200 <br />
               - Покупка график цены пересекает снизу-вверх Parabolic SAR <br />- Продажа TP=&gt; +Х% или Stop Loss =&gt;
               - Х%

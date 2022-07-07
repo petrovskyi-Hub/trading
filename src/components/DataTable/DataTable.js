@@ -20,7 +20,7 @@ export default function UsersTable({ data }) {
                   k === 0 ? (
                     <td key={k} className={s.correct}>
                       {/* Date */}
-                      {new Date(Number(value) * 1000).toLocaleDateString() + " "}
+                      {new Date(Number(value) * 1000).toLocaleString() + " "}
                     </td>
                   ) : (
                     <td key={k} className={s.correct}>
