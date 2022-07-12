@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import s from "./App.module.css";
 import FileInput from "./components/FileInput";
 import DataTable from "./components/DataTable";
@@ -6,6 +6,7 @@ import MACD from "./components/MACD/MACD";
 import Ichimoku from "./components/Ichimoku/Ichimoku";
 import Pulse from "./components/Pulse/Pulse";
 import PulseBTC from "./components/PulseBTC/PulseBTC";
+import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "./services/Pulses1-9";
 
 function App() {
   const [data, setData] = useState([]);
@@ -18,6 +19,9 @@ function App() {
   const [SLPercentage, setSLPercentage] = useState(1);
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
+  const [TPmax, setTPmax] = useState(10);
+  const loader = useRef(null);
+  // const [loading, setLoading] = useState(false);
 
   const filterData = (e) => {
     e.preventDefault();
@@ -46,6 +50,120 @@ function App() {
     });
 
     setFilteredData(fData);
+  };
+
+  // useEffect(() => {
+  //   dispatch({ type: "loading", value: false });
+  // }, [TPPercentage, SLPercentage]);
+
+  const handleClick = async (cb) => {
+    loader.current.style.display = "block";
+    setTimeout(cb, 0);
+  };
+
+  // console.log("state", state);
+  const autoTP = () => {
+    let algorithm;
+    switch (strategy) {
+      case "1":
+        algorithm = P1;
+        break;
+      case "2":
+        algorithm = P2;
+        break;
+      case "3":
+        algorithm = P3;
+        break;
+      case "4":
+        algorithm = P4;
+        break;
+      case "5":
+        algorithm = P5;
+        break;
+      case "6":
+        algorithm = P6;
+        break;
+      case "7":
+        algorithm = P7;
+        break;
+      case "8":
+        algorithm = P8;
+        break;
+      case "9":
+        algorithm = P9;
+        break;
+    }
+
+    let bestTP = 1;
+    let bestSumP = -999999;
+    for (let TP = 1; TP <= TPmax * 10; TP += 1) {
+      const periods = algorithm(filteredData, TP / 10, SLPercentage);
+      const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+
+      if (bestSumP < sumPercentage) {
+        bestSumP = sumPercentage;
+        bestTP = TP / 10;
+      }
+    }
+    setTPPercentage(bestTP);
+    console.log("🚀bestTP", bestTP);
+    loader.current.style.display = "none";
+  };
+
+  const autoTPAndSL = () => {
+    let algorithm;
+    switch (strategy) {
+      case "1":
+        algorithm = P1;
+        break;
+      case "2":
+        algorithm = P2;
+        break;
+      case "3":
+        algorithm = P3;
+        break;
+      case "4":
+        algorithm = P4;
+        break;
+      case "5":
+        algorithm = P5;
+        break;
+      case "6":
+        algorithm = P6;
+        break;
+      case "7":
+        algorithm = P7;
+        break;
+      case "8":
+        algorithm = P8;
+        break;
+      case "9":
+        algorithm = P9;
+        break;
+    }
+
+    let bestTP = 1;
+    let bestSL = 1;
+    let bestSumP = -999999;
+
+    for (let TP = 1; TP <= TPmax * 10; TP += 1) {
+      for (let SL = 1; SL <= 100; SL += 1) {
+        // max 10%
+        const periods = algorithm(filteredData, TP / 10, SL / 10);
+        const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+
+        if (bestSumP < sumPercentage) {
+          bestSumP = sumPercentage;
+          bestTP = TP / 10;
+          bestSL = SL / 10;
+        }
+      }
+    }
+    setTPPercentage(bestTP);
+    setSLPercentage(bestSL);
+    console.log("🚀bestTP", bestTP);
+    console.log("🚀bestSL", bestSL);
+    loader.current.style.display = "none";
   };
 
   const filterDouble = (e) => {
@@ -139,9 +257,9 @@ function App() {
                 style={{ width: "50px" }}
                 type="number"
                 value={TPPercentage}
-                step="0.5"
+                step="0.1"
                 onChange={(e) => setTPPercentage(e.target.value)}
-                min="0.5"
+                min="0.1"
               />
             </label>
             <label className={s.strategyLabel}>
@@ -150,7 +268,7 @@ function App() {
                 style={{ width: "50px" }}
                 type="number"
                 value={SLPercentage}
-                step="0.5"
+                step="0.1"
                 onChange={(e) => setSLPercentage(e.target.value)}
                 min="0"
               />
@@ -175,6 +293,33 @@ function App() {
         <input id="end" type="date" name="endDate" className={s.filterInput}></input>
         <input type="submit" value="Filter"></input>
       </form>
+      {indicator === "Pulse" && (
+        <>
+          <div style={{ marginBottom: "10px" }}>
+            <button style={{ marginRight: "10px" }} onClick={() => handleClick(autoTPAndSL)}>
+              Автоподбор TP и SL
+            </button>
+            <button style={{ marginRight: "10px" }} onClick={() => handleClick(autoTP)}>
+              Автоподбор TP
+            </button>
+            <label>
+              <span className={s.label}>Введите макс TP для автоподбора</span>
+              <input
+                style={{ width: "50px" }}
+                type="number"
+                value={TPmax}
+                step="1"
+                onChange={(e) => setTPmax(e.target.value)}
+                min="1"
+                max="100"
+              />
+            </label>
+          </div>
+          <div ref={loader} className={s.loader} style={{ display: "none" }}>
+            {/* Подбор... */}
+          </div>
+        </>
+      )}
       {error !== "" && (
         <p className={s.error} role="alert">
           {error}
@@ -206,10 +351,12 @@ function App() {
           setError={setError}
         />
       )}
-      <label>
-        <span>Показать таблицу</span>
-        <input type="checkbox" value={showTable} onChange={(e) => setShowTable(e.target.checked)}></input>
-      </label>
+      {filteredData.length > 0 && (
+        <label>
+          <span>Показать таблицу</span>
+          <input type="checkbox" value={showTable} onChange={(e) => setShowTable(e.target.checked)}></input>
+        </label>
+      )}
       {filteredData.length > 0 && showTable && <DataTable data={filteredData} />}
     </div>
   );

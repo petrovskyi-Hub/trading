@@ -18,7 +18,7 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P1");
+  // console.log("algorithm P1");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA = Number(data[i - 1][EMAIndex]);
@@ -47,17 +47,17 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P1 sale ", saleDate.toLocaleString());
+      // console.log("P1 sale ", saleDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && buyDate === null) {
@@ -67,7 +67,7 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       // startDate = null;
-      console.log("P1 buy ", buyDate.toLocaleString());
+      // console.log("P1 buy ", buyDate.toLocaleString());
     }
   }
 
@@ -95,7 +95,7 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P2");
+  // console.log("algorithm P2");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA1 = Number(data[i - 1][EMA1Index]);
@@ -125,17 +125,17 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P2 sale ", saleDate.toLocaleString());
+      // console.log("P2 sale ", saleDate.toLocaleString());
     }
 
     if (prevEMA1 < prevEMA2 && curEMA1 > curEMA2 && buyDate === null) {
@@ -145,7 +145,7 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       // startDate = null;
-      console.log("P2 buy ", buyDate.toLocaleString());
+      // console.log("P2 buy ", buyDate.toLocaleString());
     }
   }
 
@@ -176,7 +176,7 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P3");
+  // console.log("algorithm P3");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA = Number(data[i - 1][EMAIndex]);
@@ -209,17 +209,17 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P3 sale ", saleDate.toLocaleString());
+      // console.log("P3 sale ", saleDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevMACD < prevSignal && curMACD > curSignal) {
@@ -229,7 +229,7 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P3 buy ", buyDate.toLocaleString());
+      // console.log("P3 buy ", buyDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && (buyDate === null || isSale)) {
@@ -237,7 +237,7 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P3 start ", startDate.toLocaleString());
+      // console.log("P3 start ", startDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && startDate !== null) {
@@ -246,7 +246,7 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P3 stop ", stopDate.toLocaleString());
+      // console.log("P3 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -277,7 +277,7 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P4");
+  // console.log("algorithm P4");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA = Number(data[i - 1][EMAIndex]);
@@ -310,17 +310,17 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P4 sale ", saleDate.toLocaleString());
+      // console.log("P4 sale ", saleDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevPrice < prevEMA && curPrice > curEMA) {
@@ -330,7 +330,7 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P4 buy ", buyDate.toLocaleString());
+      // console.log("P4 buy ", buyDate.toLocaleString());
     }
 
     if (prevMACD < prevSignal && curMACD > curSignal && (buyDate === null || isSale)) {
@@ -338,7 +338,7 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P4 start ", startDate.toLocaleString());
+      // console.log("P4 start ", startDate.toLocaleString());
     }
 
     if (prevMACD > prevSignal && curMACD < curSignal && startDate !== null) {
@@ -347,7 +347,7 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P4 stop ", stopDate.toLocaleString());
+      // console.log("P4 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -377,7 +377,7 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P5");
+  // console.log("algorithm P5");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA = Number(data[i - 1][EMAIndex]);
@@ -408,17 +408,17 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P5 sale ", saleDate.toLocaleString());
+      // console.log("P5 sale ", saleDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevK < 20 && curK > 20) {
@@ -428,7 +428,7 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P5 buy ", buyDate.toLocaleString());
+      // console.log("P5 buy ", buyDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && (buyDate === null || isSale)) {
@@ -436,7 +436,7 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P5 start ", startDate.toLocaleString());
+      // console.log("P5 start ", startDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && startDate !== null) {
@@ -445,7 +445,7 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P5 stop ", stopDate.toLocaleString());
+      // console.log("P5 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -481,7 +481,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P6");
+  // console.log("algorithm P6");
 
   for (let i = 2; i < data.length; i++) {
     const prevPrice = Number(data[i - 1][close]);
@@ -516,17 +516,17 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P6 sale ", saleDate.toLocaleString());
+      // console.log("P6 sale ", saleDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
@@ -534,7 +534,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       period.hStart = {
         time: hStartDate,
       };
-      console.log("P6 hStart ", hStartDate.toLocaleString());
+      // console.log("P6 hStart ", hStartDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
@@ -544,7 +544,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       };
       hStartDate = null;
       startDate = null;
-      console.log("P6 hStop ", hStopDate.toLocaleString());
+      // console.log("P6 hStop ", hStopDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevK < 20 && curK > 20) {
@@ -554,7 +554,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P6 buy ", buyDate.toLocaleString());
+      // console.log("P6 buy ", buyDate.toLocaleString());
     }
 
     if (prevMACD < prevSignal && curMACD > curSignal && hStartDate !== null && buyDate === null) {
@@ -562,7 +562,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P6 start ", startDate.toLocaleString());
+      // console.log("P6 start ", startDate.toLocaleString());
     }
 
     if (prevMACD > prevSignal && curMACD < curSignal && startDate !== null) {
@@ -571,7 +571,7 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P6 stop ", stopDate.toLocaleString());
+      // console.log("P6 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -606,7 +606,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P7");
+  // console.log("algorithm P7");
 
   for (let i = 2; i < data.length; i++) {
     const prevPrice = Number(data[i - 1][close]);
@@ -641,17 +641,17 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P7 sale ", saleDate.toLocaleString());
+      // console.log("P7 sale ", saleDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
@@ -659,7 +659,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       period.hStart = {
         time: hStartDate,
       };
-      console.log("P7 hStart ", hStartDate.toLocaleString());
+      // console.log("P7 hStart ", hStartDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
@@ -669,7 +669,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       };
       hStartDate = null;
       startDate = null;
-      console.log("P7 hStop ", hStopDate.toLocaleString());
+      // console.log("P7 hStop ", hStopDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevMACD < prevSignal && curMACD > curSignal) {
@@ -679,7 +679,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       startDate = null;
-      console.log("P7 buy ", buyDate.toLocaleString());
+      // console.log("P7 buy ", buyDate.toLocaleString());
     }
 
     if (prevK < 20 && curK > 20 && hStartDate !== null && buyDate === null) {
@@ -687,7 +687,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P7 start ", startDate.toLocaleString());
+      // console.log("P7 start ", startDate.toLocaleString());
     }
 
     if (prevK < 80 && curK > 80 && startDate !== null) {
@@ -696,7 +696,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P7 stop ", stopDate.toLocaleString());
+      // console.log("P7 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -726,7 +726,7 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P8");
+  // console.log("algorithm P8");
 
   for (let i = 2; i < data.length; i++) {
     const prevPrice = Number(data[i - 1][close]);
@@ -757,17 +757,17 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P8 sale ", saleDate.toLocaleString());
+      // console.log("P8 sale ", saleDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevPrice < prevPSAR && curPrice > curPSAR) {
@@ -777,7 +777,7 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P8 buy ", buyDate.toLocaleString());
+      // console.log("P8 buy ", buyDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && (buyDate === null || isSale)) {
@@ -785,7 +785,7 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P8 start ", startDate.toLocaleString());
+      // console.log("P8 start ", startDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && startDate !== null) {
@@ -794,7 +794,7 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P8 stop ", stopDate.toLocaleString());
+      // console.log("P8 stop ", stopDate.toLocaleString());
     }
   }
 
@@ -830,7 +830,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm P9");
+  // console.log("algorithm P9");
 
   for (let i = 2; i < data.length; i++) {
     const prevPrice = Number(data[i - 1][close]);
@@ -865,17 +865,17 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
         Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
         Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
       ) {
-        console.log(
-          "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-          new Date(Number(data[i][0]) * 1000).toLocaleString()
-        );
+        // console.log(
+        //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+        // );
         period.sale.price = (period.buy.price * 1.002).toFixed(2);
       }
       buyDate = null;
       period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
       periods.push({ ...period });
 
-      console.log("P9 sale ", saleDate.toLocaleString());
+      // console.log("P9 sale ", saleDate.toLocaleString());
     }
 
     if (prevPrice < prevEMA && curPrice > curEMA && hStartDate === null) {
@@ -883,7 +883,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       period.hStart = {
         time: hStartDate,
       };
-      console.log("P9 hStart ", hStartDate.toLocaleString());
+      // console.log("P9 hStart ", hStartDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && hStartDate !== null) {
@@ -893,7 +893,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       };
       hStartDate = null;
       startDate = null;
-      console.log("P9 hStop ", hStopDate.toLocaleString());
+      // console.log("P9 hStop ", hStopDate.toLocaleString());
     }
 
     if (startDate !== null && buyDate === null && prevPSAR > prevPrice && curPSAR < curPrice) {
@@ -903,7 +903,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
         price: curPrice,
       };
       saleDate = null;
-      console.log("P9 buy ", buyDate.toLocaleString());
+      // console.log("P9 buy ", buyDate.toLocaleString());
     }
 
     if (prevMACD < prevSignal && curMACD > curSignal && hStartDate !== null && buyDate === null) {
@@ -911,7 +911,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
       period.start = {
         time: startDate,
       };
-      console.log("P9 start ", startDate.toLocaleString());
+      // console.log("P9 start ", startDate.toLocaleString());
     }
 
     if (prevMACD > prevSignal && curMACD < curSignal && startDate !== null) {
@@ -920,7 +920,7 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
         time: stopDate,
       };
       startDate = null;
-      console.log("P9 stop ", stopDate.toLocaleString());
+      // console.log("P9 stop ", stopDate.toLocaleString());
     }
   }
 
