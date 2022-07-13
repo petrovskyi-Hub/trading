@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import s from "./App.module.css";
 import FileInput from "./components/FileInput";
 import DataTable from "./components/DataTable";
@@ -21,7 +21,6 @@ function App() {
   const [BTCdata, setBTCData] = useState([]);
   const [TPmax, setTPmax] = useState(10);
   const loader = useRef(null);
-  // const [loading, setLoading] = useState(false);
 
   const filterData = (e) => {
     e.preventDefault();
@@ -30,13 +29,7 @@ function App() {
 
     const startDate = formData.startDate === "" ? new Date(0) : new Date(formData.startDate);
     const endDate = formData.endDate === "" ? new Date() : new Date(formData.endDate);
-    // console.log("startDate ", startDate, "endDate ", endDate);
-    // console.log(
-    //   "startDate ",
-    //   new Date(Number(data[1][0]) * 1000),
-    //   "endDate ",
-    //   new Date(Number(data[data.length - 1][0]) * 1000)
-    // );
+
     if (startDate < new Date(Number(data[1][0]) * 1000)) {
       setError("Файл имеет меньший период чем выбран в фильтре");
     }
@@ -52,56 +45,23 @@ function App() {
     setFilteredData(fData);
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: "loading", value: false });
-  // }, [TPPercentage, SLPercentage]);
-
   const handleClick = async (cb) => {
     loader.current.style.display = "block";
     setTimeout(cb, 0);
   };
 
-  // console.log("state", state);
   const autoTP = () => {
-    let algorithm;
-    switch (strategy) {
-      case "1":
-        algorithm = P1;
-        break;
-      case "2":
-        algorithm = P2;
-        break;
-      case "3":
-        algorithm = P3;
-        break;
-      case "4":
-        algorithm = P4;
-        break;
-      case "5":
-        algorithm = P5;
-        break;
-      case "6":
-        algorithm = P6;
-        break;
-      case "7":
-        algorithm = P7;
-        break;
-      case "8":
-        algorithm = P8;
-        break;
-      case "9":
-        algorithm = P9;
-        break;
-    }
+    const algorithm = getAlgorithm(strategy);
 
     let bestTP = 1;
     let bestSumP = -999999;
     for (let TP = 1; TP <= TPmax * 10; TP += 1) {
       const periods = algorithm(filteredData, TP / 10, SLPercentage);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+      const cleanPercentage = sumPercentage - periods.length * 0.2;
 
-      if (bestSumP < sumPercentage) {
-        bestSumP = sumPercentage;
+      if (bestSumP < cleanPercentage) {
+        bestSumP = cleanPercentage;
         bestTP = TP / 10;
       }
     }
@@ -111,36 +71,7 @@ function App() {
   };
 
   const autoTPAndSL = () => {
-    let algorithm;
-    switch (strategy) {
-      case "1":
-        algorithm = P1;
-        break;
-      case "2":
-        algorithm = P2;
-        break;
-      case "3":
-        algorithm = P3;
-        break;
-      case "4":
-        algorithm = P4;
-        break;
-      case "5":
-        algorithm = P5;
-        break;
-      case "6":
-        algorithm = P6;
-        break;
-      case "7":
-        algorithm = P7;
-        break;
-      case "8":
-        algorithm = P8;
-        break;
-      case "9":
-        algorithm = P9;
-        break;
-    }
+    const algorithm = getAlgorithm(strategy);
 
     let bestTP = 1;
     let bestSL = 1;
@@ -151,9 +82,10 @@ function App() {
         // max 10%
         const periods = algorithm(filteredData, TP / 10, SL / 10);
         const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+        const cleanPercentage = sumPercentage - periods.length * 0.2;
 
-        if (bestSumP < sumPercentage) {
-          bestSumP = sumPercentage;
+        if (bestSumP < cleanPercentage) {
+          bestSumP = cleanPercentage;
           bestTP = TP / 10;
           bestSL = SL / 10;
         }
@@ -363,3 +295,40 @@ function App() {
 }
 
 export default App;
+
+function getAlgorithm(strategy) {
+  let algorithm;
+  switch (strategy) {
+    case "1":
+      algorithm = P1;
+      break;
+    case "2":
+      algorithm = P2;
+      break;
+    case "3":
+      algorithm = P3;
+      break;
+    case "4":
+      algorithm = P4;
+      break;
+    case "5":
+      algorithm = P5;
+      break;
+    case "6":
+      algorithm = P6;
+      break;
+    case "7":
+      algorithm = P7;
+      break;
+    case "8":
+      algorithm = P8;
+      break;
+    case "9":
+      algorithm = P9;
+      break;
+    default:
+      algorithm = null;
+  }
+
+  return algorithm;
+}
