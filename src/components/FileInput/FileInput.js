@@ -29,15 +29,17 @@ export default function FileInput({ setData, setError, setTitle }) {
   };
 
   return (
-    <>
+    <div>
       <form className={s.fileInputForm} onChange={handleChange}>
         <label className={s.fileInputLabel}>
           Import csv file
           <input className={s.fileInput} type="file" ref={fileInput} />
         </label>
       </form>
-      {isUploaded && <p style={{ color: "green", marginTop: "0px" }}>Загружен файл {fileName}</p>}
-    </>
+      {isUploaded && (
+        <p style={{ color: "green", marginTop: "0px", display: "inline-block" }}>Загружен файл {fileName}</p>
+      )}
+    </div>
   );
 }
 

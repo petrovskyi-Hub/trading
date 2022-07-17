@@ -13,13 +13,16 @@ function App() {
   const [filteredData, setFilteredData] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
-  const [indicator, setIndicator] = useState("MACD");
+  const [indicator, setIndicator] = useState("Pulse");
   const [strategy, setStrategy] = useState("1");
   const [TPPercentage, setTPPercentage] = useState(1);
   const [SLPercentage, setSLPercentage] = useState(1);
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
   const [TPmax, setTPmax] = useState(10);
+  const [SLmax, setSLmax] = useState(10);
+  const [TPstep, setTPstep] = useState(0.5);
+  const [SLstep, setSLstep] = useState(0.5);
   const loader = useRef(null);
 
   const filterData = (e) => {
@@ -55,7 +58,7 @@ function App() {
 
     let bestTP = 1;
     let bestSumP = -999999;
-    for (let TP = 1; TP <= TPmax * 10; TP += 1) {
+    for (let TP = TPstep * 10; TP <= TPmax * 10; TP += TPstep * 10) {
       const periods = algorithm(filteredData, TP / 10, SLPercentage);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
       const cleanPercentage = sumPercentage - periods.length * 0.2;
@@ -70,6 +73,26 @@ function App() {
     loader.current.style.display = "none";
   };
 
+  const autoSL = () => {
+    const algorithm = getAlgorithm(strategy);
+
+    let bestSL = 1;
+    let bestSumP = -999999;
+    for (let SL = SLstep * 10; SL <= SLmax * 10; SL += SLstep * 10) {
+      const periods = algorithm(filteredData, TPPercentage, SL / 10);
+      const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
+      const cleanPercentage = sumPercentage - periods.length * 0.2;
+
+      if (bestSumP < cleanPercentage) {
+        bestSumP = cleanPercentage;
+        bestSL = SL / 10;
+      }
+    }
+    setSLPercentage(bestSL);
+    console.log("🚀bestSL", bestSL);
+    loader.current.style.display = "none";
+  };
+
   const autoTPAndSL = () => {
     const algorithm = getAlgorithm(strategy);
 
@@ -77,8 +100,8 @@ function App() {
     let bestSL = 1;
     let bestSumP = -999999;
 
-    for (let TP = 1; TP <= TPmax * 10; TP += 1) {
-      for (let SL = 1; SL <= 100; SL += 1) {
+    for (let TP = TPstep * 10; TP <= TPmax * 10; TP += TPstep * 10) {
+      for (let SL = SLstep * 10; SL <= SLmax * 10; SL += SLstep * 10) {
         // max 10%
         const periods = algorithm(filteredData, TP / 10, SL / 10);
         const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
@@ -215,37 +238,79 @@ function App() {
         </>
       )}
       <form className={s.filter} onSubmit={indicator !== "PulseBTC" ? filterData : filterDouble}>
-        <label htmlFor="start" className={s.filterLabel}>
-          Start date
-        </label>
-        <input id="start" type="date" name="startDate" className={s.filterInput}></input>
-        <label htmlFor="end" className={s.filterLabel}>
-          End date
-        </label>
-        <input id="end" type="date" name="endDate" className={s.filterInput}></input>
         <input type="submit" value="Filter"></input>
+        <label htmlFor="start" className={s.filterLabel}>
+          Начало периода
+        </label>
+        <input id="start" type="date" name="startDate" className={s.filterInput} defaultValue="2020-07-01"></input>
+        <label htmlFor="end" className={s.filterLabel}>
+          Конец периода
+        </label>
+        <input id="end" type="date" name="endDate" className={s.filterInput} defaultValue="2022-07-01"></input>
       </form>
       {indicator === "Pulse" && (
         <>
-          <div style={{ marginBottom: "10px" }}>
-            <button style={{ marginRight: "10px" }} onClick={() => handleClick(autoTPAndSL)}>
+          <h4 style={{ textAlign: "center" }}>Автоподбор</h4>
+          <div className={s.autoTune}>
+            <div className={s.autoSettings}>
+              <label className={s.mr10}>
+                <span className={s.label}>Mакс TP для автоподбора</span>
+                <input
+                  style={{ width: "50px" }}
+                  type="number"
+                  value={TPmax}
+                  step="1"
+                  onChange={(e) => setTPmax(e.target.value)}
+                  min="1"
+                  max="100"
+                />
+              </label>
+              <label className={s.mr10}>
+                <span className={s.label}>Mакс SL для автоподбора</span>
+                <input
+                  style={{ width: "50px" }}
+                  type="number"
+                  value={SLmax}
+                  step="1"
+                  onChange={(e) => setSLmax(e.target.value)}
+                  min="1"
+                  max="100"
+                />
+              </label>
+              <label className={s.mr10}>
+                <span className={s.label}>Шаг TP</span>
+                <input
+                  style={{ width: "50px" }}
+                  type="number"
+                  value={TPstep}
+                  step="0.1"
+                  onChange={(e) => setTPstep(e.target.value)}
+                  min="0.1"
+                  max="5"
+                />
+              </label>
+              <label className={s.mr10}>
+                <span className={s.label}>Шаг SL</span>
+                <input
+                  style={{ width: "50px" }}
+                  type="number"
+                  value={SLstep}
+                  step="0.1"
+                  onChange={(e) => setSLstep(e.target.value)}
+                  min="0.1"
+                  max="5"
+                />
+              </label>
+            </div>
+            <button className={s.mr10} onClick={() => handleClick(autoTPAndSL)}>
               Автоподбор TP и SL
             </button>
-            <button style={{ marginRight: "10px" }} onClick={() => handleClick(autoTP)}>
+            <button className={s.mr10} onClick={() => handleClick(autoTP)}>
               Автоподбор TP
             </button>
-            <label>
-              <span className={s.label}>Введите макс TP для автоподбора</span>
-              <input
-                style={{ width: "50px" }}
-                type="number"
-                value={TPmax}
-                step="1"
-                onChange={(e) => setTPmax(e.target.value)}
-                min="1"
-                max="100"
-              />
-            </label>
+            <button className={s.mr10} onClick={() => handleClick(autoSL)}>
+              Автоподбор SL
+            </button>
           </div>
           <div ref={loader} className={s.loader} style={{ display: "none" }}>
             {/* Подбор... */}

@@ -1,8 +1,10 @@
 .positive {
-    color: lightgreen;
+    font-weight: bold;
+    color:green
 }
 
 .negative {
+    font-weight: bold;
     color: red;
 }
 .statsBox{
