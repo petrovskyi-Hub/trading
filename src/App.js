@@ -21,8 +21,12 @@ function App() {
   const [BTCdata, setBTCData] = useState([]);
   const [TPmax, setTPmax] = useState(10);
   const [SLmax, setSLmax] = useState(10);
-  const [TPstep, setTPstep] = useState(0.5);
-  const [SLstep, setSLstep] = useState(0.5);
+  const [TPmin, setTPmin] = useState(0.5);
+  const [SLmin, setSLmin] = useState(0.5);
+  const [TPstep, setTPstep] = useState(0.1);
+  const [SLstep, setSLstep] = useState(0.1);
+  const [profitDeals, setProfitDeals] = useState(90);
+  const [cleanProfit, setCleanProfit] = useState(40);
   const loader = useRef(null);
 
   const filterData = (e) => {
@@ -54,66 +58,96 @@ function App() {
   };
 
   const autoTP = () => {
+    setError("");
     const algorithm = getAlgorithm(strategy);
 
     let bestTP = 1;
     let bestSumP = -999999;
-    for (let TP = TPstep * 10; TP <= TPmax * 10; TP += TPstep * 10) {
+    for (let TP = TPmin * 10; TP <= TPmax * 10; TP += TPstep * 10) {
       const periods = algorithm(filteredData, TP / 10, SLPercentage);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
       const cleanPercentage = sumPercentage - periods.length * 0.2;
 
-      if (bestSumP < cleanPercentage) {
+      const profitDealsPercentage = getProfitDealsPercentage(periods);
+
+      if (bestSumP < cleanPercentage && profitDeals <= profitDealsPercentage && cleanPercentage >= cleanProfit) {
         bestSumP = cleanPercentage;
         bestTP = TP / 10;
       }
     }
+
+    if (bestSumP === -999999) {
+      setError("Невозможно найти решение");
+      loader.current.style.display = "none";
+      return;
+    }
+
     setTPPercentage(bestTP);
     console.log("🚀bestTP", bestTP);
     loader.current.style.display = "none";
   };
 
   const autoSL = () => {
+    setError("");
     const algorithm = getAlgorithm(strategy);
 
     let bestSL = 1;
     let bestSumP = -999999;
-    for (let SL = SLstep * 10; SL <= SLmax * 10; SL += SLstep * 10) {
+    for (let SL = SLmin * 10; SL <= SLmax * 10; SL += SLstep * 10) {
       const periods = algorithm(filteredData, TPPercentage, SL / 10);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
       const cleanPercentage = sumPercentage - periods.length * 0.2;
 
-      if (bestSumP < cleanPercentage) {
+      const profitDealsPercentage = getProfitDealsPercentage(periods);
+
+      if (bestSumP < cleanPercentage && profitDeals <= profitDealsPercentage && cleanPercentage >= cleanProfit) {
         bestSumP = cleanPercentage;
         bestSL = SL / 10;
       }
     }
+
+    if (bestSumP === -999999) {
+      setError("Невозможно найти решение");
+      loader.current.style.display = "none";
+      return;
+    }
+
     setSLPercentage(bestSL);
     console.log("🚀bestSL", bestSL);
     loader.current.style.display = "none";
   };
 
   const autoTPAndSL = () => {
+    setError("");
     const algorithm = getAlgorithm(strategy);
 
     let bestTP = 1;
     let bestSL = 1;
     let bestSumP = -999999;
 
-    for (let TP = TPstep * 10; TP <= TPmax * 10; TP += TPstep * 10) {
-      for (let SL = SLstep * 10; SL <= SLmax * 10; SL += SLstep * 10) {
+    for (let TP = TPmin * 10; TP <= TPmax * 10; TP += TPstep * 10) {
+      for (let SL = SLmin * 10; SL <= SLmax * 10; SL += SLstep * 10) {
         // max 10%
         const periods = algorithm(filteredData, TP / 10, SL / 10);
         const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
         const cleanPercentage = sumPercentage - periods.length * 0.2;
 
-        if (bestSumP < cleanPercentage) {
+        const profitDealsPercentage = getProfitDealsPercentage(periods);
+
+        if (bestSumP < cleanPercentage && profitDeals <= profitDealsPercentage && cleanPercentage >= cleanProfit) {
           bestSumP = cleanPercentage;
           bestTP = TP / 10;
           bestSL = SL / 10;
         }
       }
     }
+
+    if (bestSumP === -999999) {
+      setError("Невозможно найти решение");
+      loader.current.style.display = "none";
+      return;
+    }
+
     setTPPercentage(bestTP);
     setSLPercentage(bestSL);
     console.log("🚀bestTP", bestTP);
@@ -197,7 +231,9 @@ function App() {
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
+              <option value="3A">3A</option>
               <option value="4">4</option>
+              <option value="4A">4A</option>
               <option value="5">5</option>
               <option value="6">6</option>
               <option value="7">7</option>
@@ -253,53 +289,106 @@ function App() {
           <h4 style={{ textAlign: "center" }}>Автоподбор</h4>
           <div className={s.autoTune}>
             <div className={s.autoSettings}>
-              <label className={s.mr10}>
-                <span className={s.label}>Mакс TP для автоподбора</span>
+              <div>
+                <label className={s.mr10}>
+                  <span className={s.label}>Mакс TP</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={TPmax}
+                    step="1"
+                    onChange={(e) => setTPmax(e.target.value)}
+                    min="1"
+                    max="100"
+                  />
+                </label>
+                <label className={s.mr10}>
+                  <span className={s.label}>Мин TP</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={TPmin}
+                    step="0.1"
+                    onChange={(e) => setTPmin(e.target.value)}
+                    min="0.5"
+                    max="10"
+                  />
+                </label>
+                <label className={s.mr10}>
+                  <span className={s.label}>Шаг TP</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={TPstep}
+                    step="0.1"
+                    onChange={(e) => setTPstep(e.target.value)}
+                    min="0.1"
+                    max="5"
+                  />
+                </label>
+              </div>
+              <div>
+                <label className={s.mr10}>
+                  <span className={s.label}>Mакс SL</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={SLmax}
+                    step="1"
+                    onChange={(e) => setSLmax(e.target.value)}
+                    min="1"
+                    max="100"
+                  />
+                </label>
+                <label className={s.mr10}>
+                  <span className={s.label}>Мин SL</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={SLmin}
+                    step="0.1"
+                    onChange={(e) => setSLmin(e.target.value)}
+                    min="0.5"
+                    max="10"
+                  />
+                </label>
+                <label className={s.mr10}>
+                  <span className={s.label}>Шаг SL</span>
+                  <input
+                    style={{ width: "50px" }}
+                    type="number"
+                    value={SLstep}
+                    step="0.1"
+                    onChange={(e) => setSLstep(e.target.value)}
+                    min="0.1"
+                    max="5"
+                  />
+                </label>
+              </div>
+              <label className={s.mr10} style={{ display: "block", marginTop: "5px" }}>
+                <span className={s.label}>Соотношение сделок в % прибыльных/убыточных</span>
                 <input
                   style={{ width: "50px" }}
                   type="number"
-                  value={TPmax}
+                  value={profitDeals}
                   step="1"
-                  onChange={(e) => setTPmax(e.target.value)}
+                  onChange={(e) => setProfitDeals(e.target.value)}
                   min="1"
                   max="100"
                 />
               </label>
-              <label className={s.mr10}>
-                <span className={s.label}>Mакс SL для автоподбора</span>
+              <label className={s.mr10} style={{ display: "block", marginTop: "5px" }}>
+                <span className={s.label}>Чистая прибыль не менее</span>
                 <input
                   style={{ width: "50px" }}
                   type="number"
-                  value={SLmax}
+                  value={cleanProfit}
                   step="1"
-                  onChange={(e) => setSLmax(e.target.value)}
+                  onChange={(e) => setCleanProfit(e.target.value)}
                   min="1"
                   max="100"
                 />
-              </label>
-              <label className={s.mr10}>
-                <span className={s.label}>Шаг TP</span>
-                <input
-                  style={{ width: "50px" }}
-                  type="number"
-                  value={TPstep}
-                  step="0.1"
-                  onChange={(e) => setTPstep(e.target.value)}
-                  min="0.1"
-                  max="5"
-                />
-              </label>
-              <label className={s.mr10}>
-                <span className={s.label}>Шаг SL</span>
-                <input
-                  style={{ width: "50px" }}
-                  type="number"
-                  value={SLstep}
-                  step="0.1"
-                  onChange={(e) => setSLstep(e.target.value)}
-                  min="0.1"
-                  max="5"
-                />
+                %
               </label>
             </div>
             <button className={s.mr10} onClick={() => handleClick(autoTPAndSL)}>
@@ -312,9 +401,7 @@ function App() {
               Автоподбор SL
             </button>
           </div>
-          <div ref={loader} className={s.loader} style={{ display: "none" }}>
-            {/* Подбор... */}
-          </div>
+          <div ref={loader} className={s.loader} style={{ display: "none" }}></div>
         </>
       )}
       {error !== "" && (
@@ -373,7 +460,13 @@ function getAlgorithm(strategy) {
     case "3":
       algorithm = P3;
       break;
+    case "3A":
+      algorithm = P3;
+      break;
     case "4":
+      algorithm = P4;
+      break;
+    case "4A":
       algorithm = P4;
       break;
     case "5":
@@ -396,4 +489,16 @@ function getAlgorithm(strategy) {
   }
 
   return algorithm;
+}
+
+function getProfitDealsPercentage(periods) {
+  let counterP = 0;
+
+  for (let period of periods) {
+    if (period.profit > 0) {
+      counterP += 1;
+    }
+  }
+
+  return Math.floor((counterP / periods.length) * 100);
 }

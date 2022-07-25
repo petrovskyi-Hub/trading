@@ -8,10 +8,22 @@
     color: red;
 }
 .statsBox{
+    display: flex;
+    align-items:flex-start;
     margin-top: 15px;
     margin-bottom: 5px;
 }
 
 p {
     margin: 0;
+}
+
+.copyBox{
+    display: block;
+    border: 2px solid green;
+    padding: 10px;
+}
+
+.stats{
+    margin-right: 30px;
 }

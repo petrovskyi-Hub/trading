@@ -54,9 +54,26 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setPeriods(P3(filteredData, TPPercentage, SLPercentage));
           setDescription(
             <p>
-              - Запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
-              - Остановка цена пересекает сверху-вниз EMA (эксп) ХХ <br />
-              - Покупка MACD ХХ/ХХ пересекает снизу-вверх Signal (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
+              - Запуск цена пересекает снизу-вверх EMA (эксп) 100 <br />
+              - Остановка цена пересекает сверху-вниз EMA (эксп) 100 <br />
+              - Покупка MACD 12/26 пересекает снизу-вверх Signal (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
+              Loss =&gt; - Х%
+            </p>
+          );
+        }
+        break;
+
+      case "3A":
+        if (EMAIndex === -1 || MACDIndex === -1 || SignalIndex === -1) {
+          setError("В файле нет нужных данных");
+          setPeriods([]);
+        } else {
+          setPeriods(P3(filteredData, TPPercentage, SLPercentage));
+          setDescription(
+            <p>
+              - Запуск цена пересекает снизу-вверх EMA (эксп) 200 <br />
+              - Остановка цена пересекает сверху-вниз EMA (эксп) 200 <br />
+              - Покупка MACD 12/26 пересекает снизу-вверх Signal (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
               Loss =&gt; - Х%
             </p>
           );
@@ -71,9 +88,26 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setPeriods(P4(filteredData, TPPercentage, SLPercentage));
           setDescription(
             <p>
-              - Запуск MACD ХХ/ХХ пересекает снизу-вверх Signal <br />
-              - Остановка MACD ХХ/ХХ пересекает сверху-вниз Signal <br />
-              - Покупка цена пересекает снизу-вверх EMA (эксп) ХХ (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
+              - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
+              - Остановка MACD 12/26 пересекает сверху-вниз Signal <br />
+              - Покупка цена пересекает снизу-вверх EMA (эксп) 100 (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
+              Loss =&gt; - Х%
+            </p>
+          );
+        }
+        break;
+
+      case "4A":
+        if (EMAIndex === -1 || MACDIndex === -1 || SignalIndex === -1) {
+          setError("В файле нет нужных данных");
+          setPeriods([]);
+        } else {
+          setPeriods(P4(filteredData, TPPercentage, SLPercentage));
+          setDescription(
+            <p>
+              - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
+              - Остановка MACD 12/26 пересекает сверху-вниз Signal <br />
+              - Покупка цена пересекает снизу-вверх EMA (эксп) 200 (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
               Loss =&gt; - Х%
             </p>
           );
@@ -182,7 +216,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
       {description}
       {!!periods.length && (
         <>
-          {calcStats(periods)}
+          {calcStats(periods, TPPercentage, SLPercentage)}
           <DealTable periods={periods} />
         </>
       )}
