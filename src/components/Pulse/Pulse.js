@@ -21,7 +21,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P1(filteredData, TPPercentage, SLPercentage));
+          const periods = P1(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Покупка цена пересекает снизу-вверх EMA (эксп) ХХ (на закр бара) <br />- Продажа TP=&gt; +Х% или Stop
@@ -36,7 +38,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P2(filteredData, TPPercentage, SLPercentage));
+          const periods = P2(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Покупка EMA(эксп) ХХ пересекает EMA(эксп) ХХ снизу-вверх (на закр бара) <br />- Продажа TP=&gt; +Х% или
@@ -51,7 +55,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P3(filteredData, TPPercentage, SLPercentage));
+          const periods = P3(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск цена пересекает снизу-вверх EMA (эксп) 100 <br />
@@ -68,7 +74,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P3(filteredData, TPPercentage, SLPercentage));
+          const periods = P3(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск цена пересекает снизу-вверх EMA (эксп) 200 <br />
@@ -85,7 +93,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P4(filteredData, TPPercentage, SLPercentage));
+          const periods = P4(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
@@ -102,7 +112,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P4(filteredData, TPPercentage, SLPercentage));
+          const periods = P4(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск MACD 12/26 пересекает снизу-вверх Signal <br />
@@ -119,7 +131,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P5(filteredData, TPPercentage, SLPercentage));
+          const periods = P5(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
@@ -135,7 +149,10 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P6(filteredData, TPPercentage, SLPercentage));
+          const periods = P6(filteredData, TPPercentage, SLPercentage);
+          console.log("🚀 ~ file: Pulse.js ~ line 153 ~ useEffect ~ periods", periods);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
@@ -153,7 +170,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P7(filteredData, TPPercentage, SLPercentage));
+          const periods = P7(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
@@ -171,7 +190,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P8(filteredData, TPPercentage, SLPercentage));
+          const periods = P8(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Запуск цена пересекает снизу-вверх EMA(эксп) 200 <br />
@@ -188,7 +209,9 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          setPeriods(P9(filteredData, TPPercentage, SLPercentage));
+          const periods = P9(filteredData, TPPercentage, SLPercentage);
+          if (periods.length === 0) setError("Нет ни одной завершенной сделки");
+          setPeriods(periods);
           setDescription(
             <p>
               - Ручной запуск цена пересекает снизу-вверх EMA (эксп) ХХ <br />
