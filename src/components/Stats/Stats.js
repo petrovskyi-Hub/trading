@@ -58,6 +58,7 @@ const calcStats = (periods, TP, SL) => {
         <p>
           {TP}/{SL}={cleanPercentage.toFixed(0)}
         </p>
+        <p>K={(SL / TP).toFixed(1)}</p>
         <p>
           {periods.length}/{counterP}/{counterN}
         </p>
