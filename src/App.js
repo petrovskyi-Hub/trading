@@ -5,8 +5,10 @@ import DataTable from "./components/DataTable";
 import MACD from "./components/MACD/MACD";
 import Ichimoku from "./components/Ichimoku/Ichimoku";
 import Pulse from "./components/Pulse/Pulse";
+import PulseWithStop from "./components/PulseWithStop/PulseWithStop";
 import PulseBTC from "./components/PulseBTC/PulseBTC";
 import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "./services/Pulses1-9";
+import { PS3, PS4, PS5, PS6, PS7, PS8, PS9 } from "./services/PulsesWithStop1-9";
 
 function App() {
   const [data, setData] = useState([]);
@@ -59,7 +61,7 @@ function App() {
 
   const autoTP = () => {
     setError("");
-    const algorithm = getAlgorithm(strategy);
+    const algorithm = getAlgorithm(indicator, strategy);
 
     let bestTP = 1;
     let bestSumP = -999999;
@@ -89,7 +91,7 @@ function App() {
 
   const autoSL = () => {
     setError("");
-    const algorithm = getAlgorithm(strategy);
+    const algorithm = getAlgorithm(indicator, strategy);
 
     let bestSL = 1;
     let bestSumP = -999999;
@@ -119,7 +121,7 @@ function App() {
 
   const autoTPAndSL = () => {
     setError("");
-    const algorithm = getAlgorithm(strategy);
+    const algorithm = getAlgorithm(indicator, strategy);
 
     let bestTP = 1;
     let bestSL = 1;
@@ -216,20 +218,29 @@ function App() {
       <FileInput setData={setData} setError={setError} setTitle={setTitle} />
       <label>
         <span className={s.label}>Выберите индикатор</span>
-        <select value={indicator} onChange={(e) => setIndicator(e.target.value)}>
+        <select
+          value={indicator}
+          onChange={(e) => {
+            if (e.target.value === "PulseWithStop") {
+              setStrategy("3");
+            }
+            setIndicator(e.target.value);
+          }}
+        >
           <option value="MACD">MACD</option>
           <option value="Ichimoku">MACD + Ichimoku</option>
           <option value="Pulse">Импульсные</option>
-          <option value="PulseBTC">Импульсные после старта ВТС</option>
+          <option value="PulseWithStop">Импульсные с остановкой после 1-ой покупки</option>
+          {/* <option value="PulseBTC">Импульсные после старта ВТС</option> */}
         </select>
       </label>
-      {(indicator === "Pulse" || indicator === "PulseBTC") && (
+      {indicator !== "MACD" && indicator !== "Ichimoku" && (
         <>
           <label className={s.strategyLabel}>
             <span className={s.label}>Выберите стратегию</span>
             <select value={strategy} onChange={(e) => setStrategy(e.target.value)}>
-              <option value="1">1</option>
-              <option value="2">2</option>
+              {indicator === "Pulse" && <option value="1">1</option>}
+              {indicator === "Pulse" && <option value="2">2</option>}
               <option value="3">3</option>
               <option value="3A">3A</option>
               <option value="4">4</option>
@@ -284,7 +295,7 @@ function App() {
         </label>
         <input id="end" type="date" name="endDate" className={s.filterInput} defaultValue="2022-07-01"></input>
       </form>
-      {indicator === "Pulse" && (
+      {indicator !== "MACD" && indicator !== "Ichimoku" && (
         <>
           <h4 style={{ textAlign: "center" }}>Автоподбор</h4>
           <div className={s.autoTune}>
@@ -425,6 +436,16 @@ function App() {
           setError={setError}
         />
       )}
+      {filteredData.length > 0 && indicator === "PulseWithStop" && (
+        <PulseWithStop
+          filteredData={filteredData}
+          title={title}
+          strategy={strategy}
+          TPPercentage={TPPercentage}
+          SLPercentage={SLPercentage}
+          setError={setError}
+        />
+      )}
       {filteredData.length > 0 && indicator === "PulseBTC" && (
         <PulseBTC
           filteredData={filteredData}
@@ -448,44 +469,78 @@ function App() {
 
 export default App;
 
-function getAlgorithm(strategy) {
+function getAlgorithm(indicator, strategy) {
   let algorithm;
-  switch (strategy) {
-    case "1":
-      algorithm = P1;
-      break;
-    case "2":
-      algorithm = P2;
-      break;
-    case "3":
-      algorithm = P3;
-      break;
-    case "3A":
-      algorithm = P3;
-      break;
-    case "4":
-      algorithm = P4;
-      break;
-    case "4A":
-      algorithm = P4;
-      break;
-    case "5":
-      algorithm = P5;
-      break;
-    case "6":
-      algorithm = P6;
-      break;
-    case "7":
-      algorithm = P7;
-      break;
-    case "8":
-      algorithm = P8;
-      break;
-    case "9":
-      algorithm = P9;
-      break;
-    default:
-      algorithm = null;
+  if (indicator === "Pulse") {
+    switch (strategy) {
+      case "1":
+        algorithm = P1;
+        break;
+      case "2":
+        algorithm = P2;
+        break;
+      case "3":
+        algorithm = P3;
+        break;
+      case "3A":
+        algorithm = P3;
+        break;
+      case "4":
+        algorithm = P4;
+        break;
+      case "4A":
+        algorithm = P4;
+        break;
+      case "5":
+        algorithm = P5;
+        break;
+      case "6":
+        algorithm = P6;
+        break;
+      case "7":
+        algorithm = P7;
+        break;
+      case "8":
+        algorithm = P8;
+        break;
+      case "9":
+        algorithm = P9;
+        break;
+      default:
+        algorithm = null;
+    }
+  } else if (indicator === "PulseWithStop") {
+    switch (strategy) {
+      case "3":
+        algorithm = PS3;
+        break;
+      case "3A":
+        algorithm = PS3;
+        break;
+      case "4":
+        algorithm = PS4;
+        break;
+      case "4A":
+        algorithm = PS4;
+        break;
+      case "5":
+        algorithm = PS5;
+        break;
+      case "6":
+        algorithm = PS6;
+        break;
+      case "7":
+        algorithm = PS7;
+        break;
+      case "8":
+        algorithm = PS8;
+        break;
+      case "9":
+        algorithm = PS9;
+        break;
+      default:
+        algorithm = null;
+    }
   }
 
   return algorithm;

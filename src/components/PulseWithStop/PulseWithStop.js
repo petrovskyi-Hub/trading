@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
-import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/Pulses1-9";
+import { PS3, PS4, PS5, PS6, PS7, PS8, PS9 } from "../../services/PulsesWithStop1-9";
 
-function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
+function PulseWithStop({ filteredData, title, strategy, TPPercentage, SLPercentage, setError }) {
   const [periods, setPeriods] = useState([]);
   const [description, setDescription] = useState();
 
   useEffect(() => {
     const EMAIndex = filteredData[0].indexOf("EMA");
-    const EMA2Index = filteredData[0].indexOf("EMA", EMAIndex + 1);
+    // const EMA2Index = filteredData[0].indexOf("EMA", EMAIndex + 1);
     const MACDIndex = filteredData[0].indexOf("MACD");
     const SignalIndex = filteredData[0].indexOf("Signal");
     const KIndex = filteredData[0].indexOf("K");
     const PSARIndex = filteredData[0].indexOf("ParabolicSAR");
 
     switch (strategy) {
+      /* 
       case "1":
         if (EMAIndex === -1) {
           setError("В файле нет нужных данных");
@@ -48,14 +49,15 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
             </p>
           );
         }
-        break;
+        break; 
+        */
 
       case "3":
         if (EMAIndex === -1 || MACDIndex === -1 || SignalIndex === -1) {
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P3(filteredData, TPPercentage, SLPercentage);
+          const periods = PS3(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -74,7 +76,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P3(filteredData, TPPercentage, SLPercentage);
+          const periods = PS3(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -93,7 +95,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P4(filteredData, TPPercentage, SLPercentage);
+          const periods = PS4(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -112,7 +114,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P4(filteredData, TPPercentage, SLPercentage);
+          const periods = PS4(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -131,7 +133,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P5(filteredData, TPPercentage, SLPercentage);
+          const periods = PS5(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -149,7 +151,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P6(filteredData, TPPercentage, SLPercentage);
+          const periods = PS6(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -169,7 +171,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P7(filteredData, TPPercentage, SLPercentage);
+          const periods = PS7(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -189,7 +191,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P8(filteredData, TPPercentage, SLPercentage);
+          const periods = PS8(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -208,7 +210,7 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
           setError("В файле нет нужных данных");
           setPeriods([]);
         } else {
-          const periods = P9(filteredData, TPPercentage, SLPercentage);
+          const periods = PS9(filteredData, TPPercentage, SLPercentage);
           if (periods.length === 0) setError("Нет ни одной завершенной сделки");
           setPeriods(periods);
           setDescription(
@@ -246,4 +248,4 @@ function Pulse({ filteredData, title, strategy, TPPercentage, SLPercentage, setE
   );
 }
 
-export default Pulse;
+export default PulseWithStop;
