@@ -22,7 +22,7 @@ export const PS3 = (data, TPPercentage, SLPercentage) => {
 
   const periods = [];
 
-  console.log("algorithm PS3");
+  // console.log("algorithm PS3");
 
   for (let i = 2; i < data.length; i++) {
     const prevEMA = Number(data[i - 1][EMAIndex]);
