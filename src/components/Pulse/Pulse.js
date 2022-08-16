@@ -298,7 +298,7 @@ function Pulse({ filteredData, title }) {
         setSLPercentage={setSLPercentage}
       />
 
-      <h3 style={{ textAlign: "center" }}>Алгоритм {strategy}</h3>
+      <h3 className={s.algorithmTitle}>Алгоритм {strategy}</h3>
       <h4>Файл - {title ? title : "не импортирован"}</h4>
       {description}
       {!!periods.length && (

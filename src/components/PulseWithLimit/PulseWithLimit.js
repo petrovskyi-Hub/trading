@@ -2,34 +2,35 @@ import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
 import AutoSelect from "../AutoSelect/AutoSelect";
-import s from "./PulseWithStop.module.css";
-import { PS3, PS4, PS5, PS6, PS7, PS8, PS9 } from "../../services/PulsesWithStop1-9";
+import s from "./PulseWithLimit.module.css";
+import { P1, P2, P3, P4, P5, P6, P7, P8, P9 } from "../../services/PulseWithLimit1-9";
 
-function PulseWithStop({ filteredData, title }) {
+export default function PulseWithLimit({ filteredData, title }) {
   const [periods, setPeriods] = useState([]);
   const [description, setDescription] = useState();
   const [error, setError] = useState("");
 
-  const [strategy, setStrategy] = useState("3");
+  const [strategy, setStrategy] = useState("1");
   const [TPPercentage, setTPPercentage] = useState(1);
   const [SLPercentage, setSLPercentage] = useState(1);
+  const [maxDeals, setMaxDeals] = useState(10);
 
   useEffect(() => {
     if (filteredData.length > 0) {
       const EMAIndex = filteredData[0].indexOf("EMA");
+      const EMA2Index = filteredData[0].indexOf("EMA", EMAIndex + 1);
       const MACDIndex = filteredData[0].indexOf("MACD");
       const SignalIndex = filteredData[0].indexOf("Signal");
       const KIndex = filteredData[0].indexOf("K");
       const PSARIndex = filteredData[0].indexOf("ParabolicSAR");
 
       switch (strategy) {
-        /* 
         case "1":
           if (EMAIndex === -1) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = P1(filteredData, TPPercentage, SLPercentage);
+            const periods = P1(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -40,31 +41,30 @@ function PulseWithStop({ filteredData, title }) {
             );
           }
           break;
-  
+
         case "2":
           if (EMAIndex === -1 || EMA2Index === -1) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = P2(filteredData, TPPercentage, SLPercentage);
+            const periods = P2(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
               <p>
-                - Покупка EMA(эксп) ХХ пересекает EMA(эксп) ХХ снизу-вверх (на закр бара) <br />- Продажа TP=&gt; +Х% или
-                Stop Loss =&gt; - Х%
+                - Покупка EMA(эксп) ХХ пересекает EMA(эксп) ХХ снизу-вверх (на закр бара) <br />- Продажа TP=&gt; +Х%
+                или Stop Loss =&gt; - Х%
               </p>
             );
           }
-          break; 
-          */
+          break;
 
         case "3":
           if (EMAIndex === -1 || MACDIndex === -1 || SignalIndex === -1) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS3(filteredData, TPPercentage, SLPercentage);
+            const periods = P3(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -83,7 +83,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS3(filteredData, TPPercentage, SLPercentage);
+            const periods = P3(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -102,7 +102,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS4(filteredData, TPPercentage, SLPercentage);
+            const periods = P4(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -121,7 +121,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS4(filteredData, TPPercentage, SLPercentage);
+            const periods = P4(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -140,7 +140,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS5(filteredData, TPPercentage, SLPercentage);
+            const periods = P5(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -159,7 +159,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS6(filteredData, TPPercentage, SLPercentage);
+            const periods = P6(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -180,7 +180,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS7(filteredData, TPPercentage, SLPercentage);
+            const periods = P7(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -200,7 +200,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS8(filteredData, TPPercentage, SLPercentage);
+            const periods = P8(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -219,7 +219,7 @@ function PulseWithStop({ filteredData, title }) {
             setError("В файле нет нужных данных");
             setPeriods([]);
           } else {
-            const periods = PS9(filteredData, TPPercentage, SLPercentage);
+            const periods = P9(filteredData, TPPercentage, SLPercentage, maxDeals);
             if (periods.length === 0) setError("Нет ни одной завершенной сделки");
             setPeriods(periods);
             setDescription(
@@ -241,7 +241,7 @@ function PulseWithStop({ filteredData, title }) {
           break;
       }
     }
-  }, [filteredData, strategy, TPPercentage, SLPercentage, setError]);
+  }, [filteredData, strategy, TPPercentage, SLPercentage, maxDeals, setError]);
 
   return (
     <div className={s.box}>
@@ -253,15 +253,17 @@ function PulseWithStop({ filteredData, title }) {
       <label>
         <span className={s.label}>Выберите стратегию</span>
         <select value={strategy} onChange={(e) => setStrategy(e.target.value)}>
+          <option value="1">1</option>
+          <option value="2">2</option>
           <option value="3">3</option>
           <option value="3A">3A</option>
           <option value="4">4</option>
           <option value="4A">4A</option>
           <option value="5">5</option>
-          <option value="6">6</option>
+          {/* <option value="6">6</option>
           <option value="7">7</option>
           <option value="8">8</option>
-          <option value="9">9</option>
+          <option value="9">9</option> */}
         </select>
       </label>
       <div style={{ marginTop: "5px" }}>
@@ -287,6 +289,18 @@ function PulseWithStop({ filteredData, title }) {
             min="0"
           />
         </label>
+        <label className={s.strategyLabel}>
+          <span className={s.label}>Макc кол-во покупок</span>
+          <input
+            style={{ width: "50px" }}
+            type="number"
+            value={maxDeals}
+            step="1"
+            onChange={(e) => setMaxDeals(e.target.value)}
+            min="1"
+            max="100"
+          />
+        </label>
       </div>
       <AutoSelect
         filteredData={filteredData}
@@ -295,6 +309,7 @@ function PulseWithStop({ filteredData, title }) {
         SLPercentage={SLPercentage}
         setTPPercentage={setTPPercentage}
         setSLPercentage={setSLPercentage}
+        maxDeals={maxDeals}
       />
 
       <h3 className={s.algorithmTitle}>Алгоритм {strategy}</h3>
@@ -310,41 +325,45 @@ function PulseWithStop({ filteredData, title }) {
   );
 }
 
-export default PulseWithStop;
-
 function getAlgorithm(strategy) {
   let algorithm;
+
   switch (strategy) {
+    case "1":
+      algorithm = P1;
+      break;
+    case "2":
+      algorithm = P2;
+      break;
     case "3":
-      algorithm = PS3;
+      algorithm = P3;
       break;
     case "3A":
-      algorithm = PS3;
+      algorithm = P3;
       break;
     case "4":
-      algorithm = PS4;
+      algorithm = P4;
       break;
     case "4A":
-      algorithm = PS4;
+      algorithm = P4;
       break;
     case "5":
-      algorithm = PS5;
+      algorithm = P5;
       break;
     case "6":
-      algorithm = PS6;
+      algorithm = P6;
       break;
     case "7":
-      algorithm = PS7;
+      algorithm = P7;
       break;
     case "8":
-      algorithm = PS8;
+      algorithm = P8;
       break;
     case "9":
-      algorithm = PS9;
+      algorithm = P9;
       break;
     default:
       algorithm = null;
   }
-
   return algorithm;
 }

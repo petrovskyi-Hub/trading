@@ -6,6 +6,7 @@ import MACD from "./components/MACD/MACD";
 import Ichimoku from "./components/Ichimoku/Ichimoku";
 import Pulse from "./components/Pulse/Pulse";
 import PulseWithStop from "./components/PulseWithStop/PulseWithStop";
+import PulseWithLimit from "./components/PulseWithLimit/PulseWithLimit";
 // import PulseBTC from "./components/PulseBTC/PulseBTC";
 
 function App() {
@@ -110,6 +111,10 @@ function App() {
           <option value="Ichimoku">MACD + Ichimoku</option>
           <option value="Pulse">Импульсные</option>
           <option value="PulseWithStop">Импульсные с остановкой после 1-ой покупки</option>
+          <option value="PulseWithLimit">Импульсные с ограниченным количеством покупок</option>
+          {/* <option value="PulseWithLimitAndStopBySL">
+            Импульсные с ограниченным количеством покупок и остановкой после продажи по SL
+          </option> */}
           {/* <option value="PulseBTC">Импульсные после старта ВТС</option> */}
         </select>
       </label>
@@ -144,6 +149,8 @@ function App() {
       {indicator === "Pulse" && <Pulse filteredData={filteredData} title={title} />}
 
       {indicator === "PulseWithStop" && <PulseWithStop filteredData={filteredData} title={title} />}
+
+      {indicator === "PulseWithLimit" && <PulseWithLimit filteredData={filteredData} title={title} />}
 
       {/* {filteredData.length > 0 && indicator === "PulseBTC" && (
         <PulseBTC
