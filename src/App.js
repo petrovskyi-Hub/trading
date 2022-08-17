@@ -109,11 +109,11 @@ function App() {
         >
           <option value="MACD">MACD</option>
           <option value="Ichimoku">MACD + Ichimoku</option>
-          <option value="Pulse">Импульсные</option>
-          <option value="PulseWithStop">Импульсные с остановкой после 1-ой покупки</option>
-          <option value="PulseWithLimit">Импульсные с ограниченным количеством покупок</option>
+          <option value="Pulse">Импульсные (1 Покупка без Остановки после Продажи)</option>
+          <option value="PulseWithStop">Импульсные (1 Покупка с Остановкой после TP/SL )</option>
+          <option value="PulseWithLimit">Импульсные (много Покупок без Остановки после SL)</option>
           {/* <option value="PulseWithLimitAndStopBySL">
-            Импульсные с ограниченным количеством покупок и остановкой после продажи по SL
+            Импульсные  (много Покупок с Остановкой после SL)
           </option> */}
           {/* <option value="PulseBTC">Импульсные после старта ВТС</option> */}
         </select>

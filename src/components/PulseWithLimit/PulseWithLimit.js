@@ -261,9 +261,9 @@ export default function PulseWithLimit({ filteredData, title }) {
           <option value="4A">4A</option>
           <option value="5">5</option>
           {/* <option value="6">6</option>
-          <option value="7">7</option>
+          <option value="7">7</option> */}
           <option value="8">8</option>
-          <option value="9">9</option> */}
+          {/* <option value="9">9</option> */}
         </select>
       </label>
       <div style={{ marginTop: "5px" }}>

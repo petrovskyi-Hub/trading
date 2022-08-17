@@ -20,6 +20,17 @@ export default function AutoSelect({
   const [profitDeals, setProfitDeals] = useState(90);
   const [cleanProfit, setCleanProfit] = useState(40);
 
+  const [BestCleanProfit, setBestCleanProfit] = useState(0);
+  const [BestSLForBestCleanProfit, setBestSLForCleanProfit] = useState(0);
+  const [BestTPForBestCleanProfit, setBestTPForCleanProfit] = useState(0);
+  const [ProfitDealsForBestCleanProfit, setProfitDealsForBestCleanProfit] = useState(0);
+
+  const [BestProfitDeals, setBestProfitDeals] = useState(0);
+  const [BestSLForBestProfitDeals, setBestSLForProfitDeals] = useState(0);
+  const [BestTPForBestProfitDeals, setBestTPForProfitDeals] = useState(0);
+  const [CleanProfitForBestProfitDeals, setCleanProfitForProfitDeals] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+
   const loader = useRef(null);
 
   const handleClick = async (cb) => {
@@ -31,8 +42,10 @@ export default function AutoSelect({
     setError("");
 
     let bestTP = 1;
-    let bestTPForBestClean = 1;
-    let bestTPForBestDealsP = 1;
+    let bestTPForBestClean;
+    let bestTPForBestDealsP;
+    let profitDealsForBestClean;
+    let cleanForBestProfitDeals;
     let bestSumP = -999999;
     let bestCleanPercentage = -999999;
     let bestProfitDealsPercentage = 0;
@@ -50,10 +63,12 @@ export default function AutoSelect({
 
       if (bestCleanPercentage < cleanPercentage) {
         bestCleanPercentage = cleanPercentage;
+        profitDealsForBestClean = profitDealsPercentage;
         bestTPForBestClean = TP / 10;
       }
       if (bestProfitDealsPercentage < profitDealsPercentage) {
         bestProfitDealsPercentage = profitDealsPercentage;
+        cleanForBestProfitDeals = cleanPercentage;
         bestTPForBestDealsP = TP / 10;
       }
 
@@ -69,24 +84,38 @@ export default function AutoSelect({
       // );
     }
 
+    console.log(
+      "Лучшая чистая прибыль",
+      bestCleanPercentage.toFixed(1),
+      "%",
+      "TP=",
+      bestTPForBestClean,
+      "SL=",
+      SLPercentage
+    );
+    console.log(
+      "Лучшее соотношение сделок",
+      bestProfitDealsPercentage.toFixed(1),
+      "%",
+      "TP=",
+      bestTPForBestDealsP,
+      "SL=",
+      SLPercentage
+    );
+
+    setShowResults(true);
+    setBestCleanProfit(bestCleanPercentage.toFixed(1));
+    setProfitDealsForBestCleanProfit(profitDealsForBestClean.toFixed(1));
+    setBestTPForCleanProfit(bestTPForBestClean);
+    setBestSLForCleanProfit(SLPercentage);
+
+    setBestProfitDeals(bestProfitDealsPercentage.toFixed(1));
+    setCleanProfitForProfitDeals(cleanForBestProfitDeals.toFixed(1));
+    setBestTPForProfitDeals(bestTPForBestDealsP);
+    setBestSLForProfitDeals(SLPercentage);
+
     if (bestSumP === -999999) {
       setError("Невозможно найти решение");
-      console.log(
-        "Лучшая чистая прибыль",
-        bestCleanPercentage.toFixed(1),
-        "TP=",
-        bestTPForBestClean,
-        "SL=",
-        SLPercentage
-      );
-      console.log(
-        "Лучшее соотношение сделок",
-        bestProfitDealsPercentage.toFixed(1),
-        "TP=",
-        bestTPForBestDealsP,
-        "SL=",
-        SLPercentage
-      );
       loader.current.style.display = "none";
       return;
     }
@@ -101,8 +130,10 @@ export default function AutoSelect({
 
     let bestSL = 1;
     let bestSumP = -999999;
-    let bestSLForBestClean = 1;
-    let bestSLForBestDealsP = 1;
+    let bestSLForBestClean;
+    let bestSLForBestDealsP;
+    let profitDealsForBestClean;
+    let cleanForBestProfitDeals;
     let bestCleanPercentage = -999999;
     let bestProfitDealsPercentage = 0;
     for (let SL = SLmin * 10; SL <= SLmax * 10; SL += SLstep * 10) {
@@ -119,10 +150,12 @@ export default function AutoSelect({
 
       if (bestCleanPercentage < cleanPercentage) {
         bestCleanPercentage = cleanPercentage;
+        profitDealsForBestClean = profitDealsPercentage;
         bestSLForBestClean = SL / 10;
       }
       if (bestProfitDealsPercentage < profitDealsPercentage) {
         bestProfitDealsPercentage = profitDealsPercentage;
+        cleanForBestProfitDeals = cleanPercentage;
         bestSLForBestDealsP = SL / 10;
       }
 
@@ -138,6 +171,36 @@ export default function AutoSelect({
       // );
     }
 
+    // console.log(
+    //   "Лучшая чистая прибыль",
+    //   bestCleanPercentage.toFixed(1),
+    //   "%",
+    //   "TP=",
+    //   TPPercentage,
+    //   "SL=",
+    //   bestSLForBestClean
+    // );
+    // console.log(
+    //   "Лучшее соотношение сделок",
+    //   bestProfitDealsPercentage.toFixed(1),
+    //   "%",
+    //   "TP=",
+    //   TPPercentage,
+    //   "SL=",
+    //   bestSLForBestDealsP
+    // );
+
+    setShowResults(true);
+    setBestCleanProfit(bestCleanPercentage.toFixed(1));
+    setProfitDealsForBestCleanProfit(profitDealsForBestClean.toFixed(1));
+    setBestTPForCleanProfit(TPPercentage);
+    setBestSLForCleanProfit(bestSLForBestClean);
+
+    setBestProfitDeals(bestProfitDealsPercentage.toFixed(1));
+    setCleanProfitForProfitDeals(cleanForBestProfitDeals.toFixed(1));
+    setBestTPForProfitDeals(TPPercentage);
+    setBestSLForProfitDeals(bestSLForBestDealsP);
+
     if (bestSumP === -999999) {
       setError("Невозможно найти решение");
       loader.current.style.display = "none";
@@ -146,36 +209,22 @@ export default function AutoSelect({
 
     setSLPercentage(bestSL);
     console.log("🚀bestSL", bestSL);
-
-    console.log(
-      "Лучшая чистая прибыль",
-      bestCleanPercentage.toFixed(1),
-      "TP=",
-      TPPercentage,
-      "SL=",
-      bestSLForBestClean
-    );
-    console.log(
-      "Лучшее соотношение сделок",
-      bestProfitDealsPercentage.toFixed(1),
-      "TP=",
-      TPPercentage,
-      "SL=",
-      bestSLForBestDealsP
-    );
     loader.current.style.display = "none";
   };
 
   const autoTPAndSL = () => {
     setError("");
+    setShowResults(false);
 
     let bestTP = 1;
     let bestSL = 1;
     let bestSumP = -999999;
-    let bestTPForBestClean = 1;
-    let bestTPForBestDealsP = 1;
-    let bestSLForBestClean = 1;
-    let bestSLForBestDealsP = 1;
+    let bestTPForBestClean;
+    let bestTPForBestDealsP;
+    let bestSLForBestClean;
+    let bestSLForBestDealsP;
+    let profitDealsForBestClean;
+    let cleanForBestProfitDeals;
     let bestCleanPercentage = -999999;
     let bestProfitDealsPercentage = 0;
 
@@ -198,11 +247,13 @@ export default function AutoSelect({
           bestCleanPercentage = cleanPercentage;
           bestSLForBestClean = SL / 10;
           bestTPForBestClean = TP / 10;
+          profitDealsForBestClean = profitDealsPercentage;
         }
         if (bestProfitDealsPercentage < profitDealsPercentage) {
           bestProfitDealsPercentage = profitDealsPercentage;
           bestSLForBestDealsP = SL / 10;
           bestTPForBestDealsP = TP / 10;
+          cleanForBestProfitDeals = cleanPercentage;
         }
 
         // console.log(
@@ -218,6 +269,42 @@ export default function AutoSelect({
       }
     }
 
+    // console.log(
+    //   "Лучшая чистая прибыль",
+    //   bestCleanPercentage.toFixed(1),
+    //   "%",
+    //   "Cоотношение сделок",
+    //   profitDealsForBestClean,
+    //   "%",
+    //   "TP=",
+    //   bestTPForBestClean,
+    //   "SL=",
+    //   bestSLForBestClean
+    // );
+    // console.log(
+    //   "Лучшее соотношение сделок",
+    //   bestProfitDealsPercentage.toFixed(1),
+    //   "%",
+    //   "Чистая прибыль",
+    //   cleanForBestProfitDeals,
+    //   "%",
+    //   "TP=",
+    //   bestTPForBestDealsP,
+    //   "SL=",
+    //   bestSLForBestDealsP
+    // );
+
+    setShowResults(true);
+    setBestCleanProfit(bestCleanPercentage.toFixed(1));
+    setProfitDealsForBestCleanProfit(profitDealsForBestClean.toFixed(1));
+    setBestTPForCleanProfit(bestTPForBestClean);
+    setBestSLForCleanProfit(bestSLForBestClean);
+
+    setBestProfitDeals(bestProfitDealsPercentage.toFixed(1));
+    setCleanProfitForProfitDeals(cleanForBestProfitDeals.toFixed(1));
+    setBestTPForProfitDeals(bestTPForBestDealsP);
+    setBestSLForProfitDeals(bestSLForBestDealsP);
+
     if (bestSumP === -999999) {
       setError("Невозможно найти решение");
       loader.current.style.display = "none";
@@ -229,32 +316,10 @@ export default function AutoSelect({
     console.log("🚀bestTP", bestTP);
     console.log("🚀bestSL", bestSL);
     loader.current.style.display = "none";
-
-    console.log(
-      "Лучшая чистая прибыль",
-      bestCleanPercentage.toFixed(1),
-      "TP=",
-      bestTPForBestClean,
-      "SL=",
-      bestSLForBestClean
-    );
-    console.log(
-      "Лучшее соотношение сделок",
-      bestProfitDealsPercentage.toFixed(1),
-      "TP=",
-      bestTPForBestDealsP,
-      "SL=",
-      bestSLForBestDealsP
-    );
   };
 
   return (
     <>
-      {error !== "" && (
-        <p className={s.error} role="alert">
-          {error}
-        </p>
-      )}
       <h4 className={s.boxTitle}>Автоподбор</h4>
       <div className={s.autoTune}>
         <div className={s.autoSettings}>
@@ -371,6 +436,23 @@ export default function AutoSelect({
         </button>
       </div>
       <div ref={loader} className={s.loader} style={{ display: "none" }}></div>
+      {error !== "" && (
+        <p className={s.error} role="alert">
+          {error}
+        </p>
+      )}
+      {showResults && (
+        <div className={s.result}>
+          <p>
+            {`Лучшая чистая прибыль ${BestCleanProfit}%, Cоотношение сделок в % прибыльных/убыточных ${ProfitDealsForBestCleanProfit} 
+          (TP=${BestTPForBestCleanProfit}, SL=${BestSLForBestCleanProfit})`}
+          </p>
+          <p>
+            {`Лучшее соотношение сделок в % прибыльных/убыточных ${BestProfitDeals}, Чистая прибыль ${CleanProfitForBestProfitDeals}% 
+          (TP=${BestTPForBestProfitDeals}, SL=${BestSLForBestProfitDeals})`}
+          </p>
+        </div>
+      )}
     </>
   );
 }

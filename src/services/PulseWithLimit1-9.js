@@ -739,7 +739,7 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
   return periods;
 };
 
-export const P8 = (data, TPPercentage, SLPercentage) => {
+export const P8 = (data, TPPercentage, SLPercentage, maxDeals) => {
   const EMAIndex = data[0].indexOf("EMA");
   const PSARIndex = data[0].indexOf("ParabolicSAR");
 
@@ -748,19 +748,15 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
   const high = data[0].indexOf("high");
   const low = data[0].indexOf("low");
 
-  // console.log("indexes: ", MACDIndex, SignalIndex, EMAIndex, close);
+  // let deals = 0;
   let startDate = null;
-  let stopDate = null;
-  let buyDate = null;
-  let saleDate = null;
   const period = {
-    start: null,
-    stop: null,
     buy: null,
     sale: null,
   };
 
   const periods = [];
+  let currentPeriods = [];
 
   // console.log("algorithm P8");
 
@@ -772,63 +768,68 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
     const prevPSAR = Number(data[i - 1][PSARIndex]);
     const curPSAR = Number(data[i][PSARIndex]);
 
-    const isSale =
-      SLPercentage === "0"
-        ? buyDate !== null && Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-        : buyDate !== null &&
-          (Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) ||
-            Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100));
+    currentPeriods = currentPeriods.filter((period) => {
+      const isSale =
+        SLPercentage === "0"
+          ? Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
+          : Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) ||
+            Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100);
 
-    if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000);
-      period.sale = {
-        time: saleDate,
-        price:
-          Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
-      };
-      if (
-        buyDate !== null &&
-        Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
-        Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
-      ) {
-        // console.log(
-        //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
-        //   new Date(Number(data[i][0]) * 1000).toLocaleString()
-        // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+      if (isSale) {
+        const saleDate = new Date(Number(data[i][0]) * 1000);
+        period.sale = {
+          time: saleDate,
+        };
+        if (
+          SLPercentage !== "0" &&
+          Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100) &&
+          Number(data[i][low]) <= period.buy.price * (1 - SLPercentage / 100)
+        ) {
+          // console.log(
+          //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
+          //   new Date(Number(data[i][0]) * 1000).toLocaleString()
+          // );
+          period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        } else {
+          period.sale.price =
+            Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
+              ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
+              : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5);
+        }
+        period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+        periods.push({ ...period });
+
+        // deals -= 1;
+        // console.log("P8 sale ", saleDate.toLocaleString());
+        // console.log("deals", deals);
+
+        return false;
+      } else {
+        return true;
       }
-      buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
-      periods.push({ ...period });
+    });
 
-      // console.log("P8 sale ", saleDate.toLocaleString());
-    }
-
-    if (startDate !== null && buyDate === null && prevPrice < prevPSAR && curPrice > curPSAR) {
-      buyDate = new Date(Number(data[i][0]) * 1000);
+    if (startDate !== null && currentPeriods.length <= maxDeals && prevPrice < prevPSAR && curPrice > curPSAR) {
+      const buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: curPrice,
       };
-      saleDate = null;
+      // deals += 1;
+      currentPeriods.push({ ...period });
       // console.log("P8 buy ", buyDate.toLocaleString());
+      // console.log("deals", deals);
     }
 
-    if (prevPrice < prevEMA && curPrice > curEMA && (buyDate === null || isSale)) {
+    if (prevPrice < prevEMA && curPrice > curEMA && startDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
-      period.start = {
-        time: startDate,
-      };
+
       // console.log("P8 start ", startDate.toLocaleString());
     }
 
     if (prevPrice > prevEMA && curPrice < curEMA && startDate !== null) {
-      stopDate = new Date(Number(data[i][0]) * 1000);
-      period.stop = {
-        time: stopDate,
-      };
+      const stopDate = new Date(Number(data[i][0]) * 1000);
+
       startDate = null;
       // console.log("P8 stop ", stopDate.toLocaleString());
     }
