@@ -84,24 +84,24 @@ export default function AutoSelect({
       // );
     }
 
-    console.log(
-      "Лучшая чистая прибыль",
-      bestCleanPercentage.toFixed(1),
-      "%",
-      "TP=",
-      bestTPForBestClean,
-      "SL=",
-      SLPercentage
-    );
-    console.log(
-      "Лучшее соотношение сделок",
-      bestProfitDealsPercentage.toFixed(1),
-      "%",
-      "TP=",
-      bestTPForBestDealsP,
-      "SL=",
-      SLPercentage
-    );
+    // console.log(
+    //   "Лучшая чистая прибыль",
+    //   bestCleanPercentage.toFixed(1),
+    //   "%",
+    //   "TP=",
+    //   bestTPForBestClean,
+    //   "SL=",
+    //   SLPercentage
+    // );
+    // console.log(
+    //   "Лучшее соотношение сделок",
+    //   bestProfitDealsPercentage.toFixed(1),
+    //   "%",
+    //   "TP=",
+    //   bestTPForBestDealsP,
+    //   "SL=",
+    //   SLPercentage
+    // );
 
     setShowResults(true);
     setBestCleanProfit(bestCleanPercentage.toFixed(1));
