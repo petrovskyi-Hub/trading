@@ -52,16 +52,32 @@
   background-color: rgb(235, 162, 162);
 }
 
+.resultBox {
+  position: absolute;
+}
+
 .result {
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 0px;
   margin-right: auto;
   min-width: 500px;
+  max-width: 800px;
   padding: 15px 20px 15px 20px;
   font-weight: 500;
   font-size: 14px;
   text-align: left;
   border: 1px solid black;
   background-color: rgb(172, 235, 172);
+}
+
+.copyBox {
+  position: relative;
+  left: 650px;
+  top: 290px;
+
+  display: block;
+  border: 2px solid green;
+  padding: 10px;
+  width: 220px;
 }

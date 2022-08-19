@@ -442,14 +442,26 @@ export default function AutoSelect({
         </p>
       )}
       {showResults && (
-        <div className={s.result}>
-          <p>
-            {`Лучшая чистая прибыль ${BestCleanProfit}%, Cоотношение сделок в % прибыльных/убыточных ${ProfitDealsForBestCleanProfit} 
+        <div className={s.resultBox}>
+          <div className={s.result}>
+            <p>
+              {`Лучшая чистая прибыль ${BestCleanProfit}%, Cоотношение сделок в % прибыльных/убыточных ${ProfitDealsForBestCleanProfit} 
           (TP=${BestTPForBestCleanProfit}, SL=${BestSLForBestCleanProfit})`}
+            </p>
+            <p>
+              {`Лучшее соотношение сделок в % прибыльных/убыточных ${BestProfitDeals}, Чистая прибыль ${CleanProfitForBestProfitDeals}% 
+          (TP=${BestTPForBestProfitDeals}, SL=${BestSLForBestProfitDeals})`}
+            </p>
+          </div>
+        </div>
+      )}
+      {showResults && (
+        <div className={s.copyBox}>
+          <p>
+            {`${BestCleanProfit}/${ProfitDealsForBestCleanProfit} (TP=${BestTPForBestCleanProfit}, SL=${BestSLForBestCleanProfit})`}
           </p>
           <p>
-            {`Лучшее соотношение сделок в % прибыльных/убыточных ${BestProfitDeals}, Чистая прибыль ${CleanProfitForBestProfitDeals}% 
-          (TP=${BestTPForBestProfitDeals}, SL=${BestSLForBestProfitDeals})`}
+            {`${CleanProfitForBestProfitDeals}/${BestProfitDeals} (TP=${BestTPForBestProfitDeals}, SL=${BestSLForBestProfitDeals})`}
           </p>
         </div>
       )}
