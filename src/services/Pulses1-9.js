@@ -39,8 +39,8 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -51,10 +51,10 @@ export const P1 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P1 sale ", saleDate.toLocaleString());
@@ -117,8 +117,8 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -129,10 +129,10 @@ export const P2 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P2 sale ", saleDate.toLocaleString());
@@ -201,8 +201,8 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -213,10 +213,10 @@ export const P3 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P3 sale ", saleDate.toLocaleString());
@@ -302,8 +302,8 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -314,10 +314,10 @@ export const P4 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P4 sale ", saleDate.toLocaleString());
@@ -400,8 +400,8 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -412,10 +412,10 @@ export const P5 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P5 sale ", saleDate.toLocaleString());
@@ -508,8 +508,8 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -520,10 +520,10 @@ export const P6 = (data, TPPercentage, SLPercentage) => {
         //   "SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P6 sale ", saleDate.toLocaleString());
@@ -633,8 +633,8 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -645,10 +645,10 @@ export const P7 = (data, TPPercentage, SLPercentage) => {
         //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P7 sale ", saleDate.toLocaleString());
@@ -749,8 +749,8 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -761,10 +761,10 @@ export const P8 = (data, TPPercentage, SLPercentage) => {
         //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P8 sale ", saleDate.toLocaleString());
@@ -857,8 +857,8 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
         time: saleDate,
         price:
           Number(data[i][high]) >= period.buy.price * (1 + TPPercentage / 100)
-            ? (period.buy.price * (1 + TPPercentage / 100)).toFixed(5)
-            : (period.buy.price * (1 - SLPercentage / 100)).toFixed(5),
+            ? period.buy.price * (1 + TPPercentage / 100)
+            : period.buy.price * (1 - SLPercentage / 100),
       };
       if (
         buyDate !== null &&
@@ -869,10 +869,10 @@ export const P9 = (data, TPPercentage, SLPercentage) => {
         //   "P1 SL(low price <= buy price - SL%) & TP(high price >= buy price + TP%)",
         //   new Date(Number(data[i][0]) * 1000).toLocaleString()
         // );
-        period.sale.price = (period.buy.price * 1.002).toFixed(5);
+        period.sale.price = period.buy.price * 1.002;
       }
       buyDate = null;
-      period.profit = ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2);
+      period.profit = (period.sale.price / period.buy.price) * 100 - 100;
       periods.push({ ...period });
 
       // console.log("P9 sale ", saleDate.toLocaleString());
