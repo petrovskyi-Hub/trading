@@ -7,6 +7,7 @@ import Ichimoku from "./components/Ichimoku/Ichimoku";
 import Pulse from "./components/Pulse/Pulse";
 import PulseWithStop from "./components/PulseWithStop/PulseWithStop";
 import PulseWithLimit from "./components/PulseWithLimit/PulseWithLimit";
+import PulseWithLimitAndStopBySL from "./components/PulseWithLimitAndStopBySL/PulseWithLimitAndStopBySL";
 // import PulseBTC from "./components/PulseBTC/PulseBTC";
 
 function App() {
@@ -112,9 +113,7 @@ function App() {
           <option value="Pulse">Импульсные (1 Покупка без Остановки после Продажи)</option>
           <option value="PulseWithStop">Импульсные (1 Покупка с Остановкой после TP/SL )</option>
           <option value="PulseWithLimit">Импульсные (много Покупок без Остановки после SL)</option>
-          {/* <option value="PulseWithLimitAndStopBySL">
-            Импульсные  (много Покупок с Остановкой после SL)
-          </option> */}
+          <option value="PulseWithLimitAndStopBySL">Импульсные (много Покупок с Остановкой после SL)</option>
           {/* <option value="PulseBTC">Импульсные после старта ВТС</option> */}
         </select>
       </label>
@@ -151,6 +150,10 @@ function App() {
       {indicator === "PulseWithStop" && <PulseWithStop filteredData={filteredData} title={title} />}
 
       {indicator === "PulseWithLimit" && <PulseWithLimit filteredData={filteredData} title={title} />}
+
+      {indicator === "PulseWithLimitAndStopBySL" && (
+        <PulseWithLimitAndStopBySL filteredData={filteredData} title={title} />
+      )}
 
       {/* {filteredData.length > 0 && indicator === "PulseBTC" && (
         <PulseBTC
