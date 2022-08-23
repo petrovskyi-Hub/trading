@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/trading/static/css/main.68d05f3a.css",
-    "main.js": "/trading/static/js/main.cc1b0c99.js",
+    "main.css": "/trading/static/css/main.01e09d5e.css",
+    "main.js": "/trading/static/js/main.dde2c3a4.js",
     "index.html": "/trading/index.html",
-    "main.68d05f3a.css.map": "/trading/static/css/main.68d05f3a.css.map",
-    "main.cc1b0c99.js.map": "/trading/static/js/main.cc1b0c99.js.map"
+    "main.01e09d5e.css.map": "/trading/static/css/main.01e09d5e.css.map",
+    "main.dde2c3a4.js.map": "/trading/static/js/main.dde2c3a4.js.map"
   },
   "entrypoints": [
-    "static/css/main.68d05f3a.css",
-    "static/js/main.cc1b0c99.js"
+    "static/css/main.01e09d5e.css",
+    "static/js/main.dde2c3a4.js"
   ]
 }
