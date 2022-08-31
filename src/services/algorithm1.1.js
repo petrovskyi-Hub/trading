@@ -33,10 +33,10 @@ export const algorithm1 = (data) => {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: data[i][close],
+        price: Number(data[i][close]),
       };
       buyDate = null;
-      periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
+      periods.push({ ...period, profit: (period.sale.price / period.buy.price) * 100 - 100 });
 
       console.log(
         "sale ",
@@ -52,7 +52,7 @@ export const algorithm1 = (data) => {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
-        price: data[i][close],
+        price: Number(data[i][close]),
       };
       startDate = null;
       console.log("buy ", buyDate);
