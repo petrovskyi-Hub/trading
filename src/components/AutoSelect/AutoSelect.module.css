@@ -54,7 +54,6 @@
 
 
 .result {
-  position:relative;
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 0px;
@@ -72,8 +71,8 @@
 .copySection{
   position: absolute;
   display: flex;
-  left: 650px;
-  top: 850px;
+  left: 630px;
+  top: 600px;
 }
 
 .copyBox {
@@ -81,4 +80,16 @@
   border: 2px solid green;
   padding: 10px;
   margin-right: 10px;
+  min-width: 100px;
+  min-height: 110px;
+}
+
+.positive {
+  font-weight: bold;
+  color: green
+}
+
+.negative {
+  font-weight: bold;
+  color: red;
 }

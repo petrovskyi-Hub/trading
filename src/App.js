@@ -15,7 +15,7 @@ function App() {
   const [filteredData, setFilteredData] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
-  const [indicator, setIndicator] = useState("Pulse");
+  const [indicator, setIndicator] = useState("PulseWithLimitAndStopBySL");
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
 

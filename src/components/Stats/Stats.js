@@ -56,7 +56,7 @@ const calcStats = (periods, TP, SL) => {
       </div>
       <div className={s.copyBox}>
         <p>
-          {TP}/{SL}={cleanPercentage.toFixed(0)}
+          {TP}/{SL}=<span className={cleanPercentage > 0 ? s.positive : s.negative}>{cleanPercentage.toFixed(0)}</span>
         </p>
         <p>K={(SL / TP).toFixed(1)}</p>
         <p>
