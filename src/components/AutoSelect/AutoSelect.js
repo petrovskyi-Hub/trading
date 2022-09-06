@@ -13,8 +13,8 @@ export default function AutoSelect({
   const [error, setError] = useState("");
   const [TPmax, setTPmax] = useState(10);
   const [SLmax, setSLmax] = useState(10);
-  const [TPmin, setTPmin] = useState(0.5);
-  const [SLmin, setSLmin] = useState(0.5);
+  const [TPmin, setTPmin] = useState(0.2);
+  const [SLmin, setSLmin] = useState(1);
   const [TPstep, setTPstep] = useState(0.1);
   const [SLstep, setSLstep] = useState(0.1);
   const [profitDeals, setProfitDeals] = useState(90);
