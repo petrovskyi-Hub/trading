@@ -27,6 +27,7 @@ export default function (data) {
     const prevSignal = Number(data[i - 1][SignalIndex]);
     const prevEMA = Number(data[i - 1][EMAIndex]);
     const prevLifeTime = Number(data[i - 1][LifeTimeIndex]);
+    const curPrice = Number(data[i][close]);
 
     //LifeTime green-1, red-0, black-2
 
@@ -41,10 +42,10 @@ export default function (data) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: data[i][close],
+        price: curPrice,
       };
       buyDate = null;
-      periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
+      periods.push({ ...period, profit: (period.sale.price / period.buy.price) * 100 - 100 });
 
       console.log(
         "I1a sale ",
@@ -68,7 +69,7 @@ export default function (data) {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
-        price: data[i][close],
+        price: curPrice,
       };
       startDate = null;
       console.log("I1a buy ", buyDate);

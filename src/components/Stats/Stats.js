@@ -54,18 +54,21 @@ const calcStats = (periods, TP, SL) => {
           Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(0).slice(1) || 0}</span>
         </p>
       </div>
-      <div className={s.copyBox}>
-        <p>
-          {TP}/{SL}=<span className={cleanPercentage > 0 ? s.positive : s.negative}>{cleanPercentage.toFixed(0)}</span>
-        </p>
-        <p>K={(SL / TP).toFixed(1)}</p>
-        <p>
-          {periods.length}/{counterP}/{counterN}
-        </p>
-        <p>
-          {((counterP / periods.length) * 100).toFixed(0)}/{((counterN / periods.length) * 100).toFixed(0)}
-        </p>
-      </div>
+      {TP && (
+        <div className={s.copyBox}>
+          <p>
+            {TP}/{SL}=
+            <span className={cleanPercentage > 0 ? s.positive : s.negative}>{cleanPercentage.toFixed(0)}</span>
+          </p>
+          <p>K={(SL / TP).toFixed(1)}</p>
+          <p>
+            {periods.length}/{counterP}/{counterN}
+          </p>
+          <p>
+            {((counterP / periods.length) * 100).toFixed(0)}/{((counterN / periods.length) * 100).toFixed(0)}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

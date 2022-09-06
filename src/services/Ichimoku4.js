@@ -35,16 +35,18 @@ export default function (data) {
     const curEMA = Number(data[i][EMAIndex]);
     const curLifeTime = Number(data[i][LifeTimeIndex]);
 
+    const curPrice = Number(data[i][close]);
+
     const isSale = prevLifeTime === 1 && curLifeTime === 2 && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: data[i][close],
+        price: curPrice,
       };
       buyDate = null;
-      periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
+      periods.push({ ...period, profit: (period.sale.price / period.buy.price) * 100 - 100 });
 
       console.log(
         "I4 sale ",
@@ -60,7 +62,7 @@ export default function (data) {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
-        price: data[i][close],
+        price: curPrice,
       };
       startDate = null;
       console.log("I4 buy ", buyDate);

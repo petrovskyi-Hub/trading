@@ -25,15 +25,15 @@ export default function (data) {
   for (let i = 2; i < data.length; i++) {
     const prevMACD = Number(data[i - 1][MACDIndex]);
     const prevSignal = Number(data[i - 1][SignalIndex]);
-    const prevEMA = Number(data[i - 1][EMAIndex]);
     const prevLifeTime = Number(data[i - 1][LifeTimeIndex]);
 
     //LifeTime green-1, red-0, black-2
 
     const curMACD = Number(data[i][MACDIndex]);
     const curSignal = Number(data[i][SignalIndex]);
-    const curEMA = Number(data[i][EMAIndex]);
     const curLifeTime = Number(data[i][LifeTimeIndex]);
+
+    const curPrice = Number(data[i][close]);
 
     const isSale = prevMACD > prevSignal && curMACD < curSignal && buyDate !== null;
 
@@ -41,10 +41,10 @@ export default function (data) {
       saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.sale = {
         time: saleDate,
-        price: data[i][close],
+        price: curPrice,
       };
       buyDate = null;
-      periods.push({ ...period, profit: ((period.sale.price / period.buy.price) * 100 - 100).toFixed(2) });
+      periods.push({ ...period, profit: (period.sale.price / period.buy.price) * 100 - 100 });
 
       console.log(
         "I1 sale ",
@@ -68,7 +68,7 @@ export default function (data) {
       buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
       period.buy = {
         time: buyDate,
-        price: data[i][close],
+        price: curPrice,
       };
       startDate = null;
       console.log("I1 buy ", buyDate);
