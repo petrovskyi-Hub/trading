@@ -1,0 +1,95 @@
+.loader {
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid blue;
+  border-bottom: 3px solid blue;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.boxTitle {
+  margin-left: 120px;
+}
+
+.autoTune {
+  margin-bottom: 10px;
+}
+
+.autoSettings {
+  margin-bottom: 10px;
+}
+
+.label {
+  margin-right: 5px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.error {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  padding: 28px 100px 28px 100px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid darkred;
+  background-color: rgb(235, 162, 162);
+}
+
+
+.result {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 0px;
+  margin-right: auto;
+  min-width: 500px;
+  max-width: 800px;
+  padding: 15px 20px 15px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  border: 1px solid black;
+  background-color: rgb(172, 235, 172);
+}
+
+.copySection{
+  position: absolute;
+  display: flex;
+  left: 630px;
+  top: 600px;
+}
+
+.copyBox {
+  display: block;
+  border: 2px solid green;
+  padding: 10px;
+  margin-right: 10px;
+  min-width: 100px;
+  min-height: 110px;
+}
+
+.positive {
+  font-weight: bold;
+  color: green
+}
+
+.negative {
+  font-weight: bold;
+  color: red;
+}

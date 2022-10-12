@@ -1,14 +1,15 @@
 import { useState, useRef } from "react";
 import s from "./AutoSelect.module.css";
 
-export default function AutoSelect({
+export default function AutoSelect2({
   filteredData,
   algorithm,
   TPPercentage,
   SLPercentage,
   setTPPercentage,
   setSLPercentage,
-  maxDeals,
+  startLevel,
+  buyLevel,
 }) {
   const [error, setError] = useState("");
   const [TPmax, setTPmax] = useState(10);
@@ -73,7 +74,7 @@ export default function AutoSelect({
     let bestCleanPercentage = -999999;
     let bestProfitDealsPercentage = -1;
     for (let TP = TPmin * 10; TP <= TPmax * 10; TP += TPstep * 10) {
-      const periods = algorithm(filteredData, TP / 10, SLPercentage, maxDeals);
+      const periods = algorithm(filteredData, TP / 10, SLPercentage, startLevel, buyLevel);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
       const cleanPercentage = sumPercentage - periods.length * 0.2;
 
@@ -166,7 +167,7 @@ export default function AutoSelect({
     let bestCleanPercentage = -999999;
     let bestProfitDealsPercentage = -1;
     for (let SL = SLmin * 10; SL <= SLmax * 10; SL += SLstep * 10) {
-      const periods = algorithm(filteredData, TPPercentage, SL / 10, maxDeals);
+      const periods = algorithm(filteredData, TPPercentage, SL / 10, startLevel, buyLevel);
       const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
       const cleanPercentage = sumPercentage - periods.length * 0.2;
 
@@ -266,7 +267,7 @@ export default function AutoSelect({
     for (let TP = TPmin * 10; TP <= TPmax * 10; TP += TPstep * 10) {
       for (let SL = SLmin * 10; SL <= SLmax * 10; SL += SLstep * 10) {
         // max 10%
-        const periods = algorithm(filteredData, TP / 10, SL / 10, maxDeals);
+        const periods = algorithm(filteredData, TP / 10, SL / 10, startLevel, buyLevel);
         const sumPercentage = periods.reduce((acc, period) => acc + Number(period.profit), 0);
         const cleanPercentage = sumPercentage - periods.length * 0.2;
 
