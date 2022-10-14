@@ -35,8 +35,8 @@ function StochRSI({ filteredData, title }) {
             setDescription(
               <p>
                 - Запуск: Stoch RSI пересекает уровень запуска вверх <br />
-                - Покупка: Zero Lag MACD пересекает вверх Signal (цена откр 1-ой свечи после свечи пересечения) <br />-
-                Продажа и Остановка: TP/SL
+                - Остановка: Zero Lag MACD пересекает вниз Signal <br /> - Покупка: Zero Lag MACD пересекает вверх
+                Signal (цена откр 1-ой свечи после свечи пересечения) <br />- Продажа и Остановка: TP/SL
               </p>
             );
           }

@@ -66,13 +66,12 @@ export const A_1A = (data, TPPercentage, SLPercentage, startLevel) => {
       // console.log("A_1A sale ", saleDate.toLocaleString());
     }
 
-    if (startDate !== null && buyDate === null && prevMACD < prevSignal && curMACD > curSignal) {
-      buyDate = new Date(Number(data[i + 1][0]) * 1000);
-      period.buy = {
-        time: buyDate,
-        price: nextPrice,
+    if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
+      startDate = new Date(Number(data[i][0]) * 1000);
+      period.start = {
+        time: startDate,
       };
-      // console.log("A_1A buy ", buyDate.toLocaleString());
+      // console.log("A_1A start ", startDate.toLocaleString());
     }
 
     if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
@@ -81,6 +80,25 @@ export const A_1A = (data, TPPercentage, SLPercentage, startLevel) => {
         time: startDate,
       };
       // console.log("A_1A start ", startDate.toLocaleString());
+    }
+
+    if (startDate !== null && prevMACD > prevSignal && curMACD < curSignal) {
+      buyDate = new Date(Number(data[i + 1][0]) * 1000);
+      period.buy = {
+        time: buyDate,
+        price: nextPrice,
+      };
+      startDate = null;
+      // console.log("A_1A stop ", buyDate.toLocaleString());
+    }
+
+    if (startDate !== null && buyDate === null && prevMACD < prevSignal && curMACD > curSignal) {
+      buyDate = new Date(Number(data[i + 1][0]) * 1000);
+      period.buy = {
+        time: buyDate,
+        price: nextPrice,
+      };
+      // console.log("A_1A buy ", buyDate.toLocaleString());
     }
   }
 
@@ -149,6 +167,14 @@ export const A_1B = (data, TPPercentage, SLPercentage, startLevel, buyLevel) => 
       // console.log("A_1B sale ", saleDate.toLocaleString());
     }
 
+    if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
+      startDate = new Date(Number(data[i][0]) * 1000);
+      period.start = {
+        time: startDate,
+      };
+      // console.log("A_1B start ", startDate.toLocaleString());
+    }
+
     if (startDate !== null && buyDate === null && prevK < buyLevel && curK > buyLevel) {
       buyDate = new Date(Number(data[i + 1][0]) * 1000);
       period.buy = {
@@ -156,14 +182,6 @@ export const A_1B = (data, TPPercentage, SLPercentage, startLevel, buyLevel) => 
         price: nextPrice,
       };
       // console.log("A_1B buy ", buyDate.toLocaleString());
-    }
-
-    if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000);
-      period.start = {
-        time: startDate,
-      };
-      // console.log("A_1B start ", startDate.toLocaleString());
     }
   }
 
@@ -238,9 +256,18 @@ export const A_1C = (data, TPPercentage, SLPercentage, startLevel, buyLevel) => 
       // console.log("A_1C sale ", saleDate.toLocaleString());
     }
 
+    if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
+      startDate = new Date(Number(data[i][0]) * 1000);
+      period.start = {
+        time: startDate,
+      };
+      // console.log("A_1C start ", startDate.toLocaleString());
+    }
+
     if (
-      (startDate !== null && buyDate === null && prevMACD < prevSignal && curMACD > curSignal) ||
-      (prevK < buyLevel && curK > buyLevel)
+      startDate !== null &&
+      buyDate === null &&
+      ((prevMACD < prevSignal && curMACD > curSignal) || (prevK < buyLevel && curK > buyLevel))
     ) {
       buyDate = new Date(Number(data[i + 1][0]) * 1000);
       period.buy = {
@@ -248,14 +275,6 @@ export const A_1C = (data, TPPercentage, SLPercentage, startLevel, buyLevel) => 
         price: nextPrice,
       };
       // console.log("A_1C buy ", buyDate.toLocaleString());
-    }
-
-    if (prevK < Number(startLevel) && curK >= Number(startLevel) && startDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000);
-      period.start = {
-        time: startDate,
-      };
-      // console.log("A_1C start ", startDate.toLocaleString());
     }
   }
 

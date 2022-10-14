@@ -18,8 +18,8 @@ export default function AutoSelect2({
   const [SLmin, setSLmin] = useState(1);
   const [TPstep, setTPstep] = useState(0.1);
   const [SLstep, setSLstep] = useState(0.1);
-  const [profitDeals, setProfitDeals] = useState(90);
-  const [cleanProfit, setCleanProfit] = useState(40);
+  const [profitDeals, setProfitDeals] = useState(50);
+  const [cleanProfit, setCleanProfit] = useState(10);
 
   const [resultCleanProfit, setResultCleanProfit] = useState(0);
   const [resultProfitDeals, setResultProfitDeals] = useState(0);

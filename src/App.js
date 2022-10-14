@@ -16,7 +16,7 @@ function App() {
   const [filteredData, setFilteredData] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
-  const [indicator, setIndicator] = useState("PulseWithLimitAndStopBySL");
+  const [indicator, setIndicator] = useState("StochRSI");
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
 
@@ -126,7 +126,7 @@ function App() {
         <label htmlFor="start" className={s.filterLabel}>
           Начало периода
         </label>
-        <input id="start" type="date" name="startDate" className={s.filterInput} defaultValue="2020-07-01"></input>
+        <input id="start" type="date" name="startDate" className={s.filterInput} defaultValue="2018-01-01"></input>
         <label htmlFor="end" className={s.filterLabel}>
           Конец периода
         </label>
