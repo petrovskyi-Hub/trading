@@ -9,6 +9,7 @@ import PulseWithStop from "./components/PulseWithStop/PulseWithStop";
 import PulseWithLimit from "./components/PulseWithLimit/PulseWithLimit";
 import PulseWithLimitAndStopBySL from "./components/PulseWithLimitAndStopBySL/PulseWithLimitAndStopBySL";
 import StochRSI from "./components/StochRSI/StochRSI";
+import StochRSI_S from "./components/StochRSI_S/StochRSI_S";
 // import PulseBTC from "./components/PulseBTC/PulseBTC";
 
 function App() {
@@ -116,6 +117,7 @@ function App() {
           <option value="PulseWithLimit">Импульсные (много Покупок без Остановки после SL)</option>
           <option value="PulseWithLimitAndStopBySL">Импульсные (много Покупок с Остановкой после SL)</option>
           <option value="StochRSI">Stoch RSI & Zero Lag MACD </option>
+          <option value="StochRSI_S">Stoch RSI</option>
           {/* <option value="PulseBTC">Импульсные после старта ВТС</option> */}
         </select>
       </label>
@@ -158,6 +160,10 @@ function App() {
       )}
 
       {indicator === "StochRSI" && <StochRSI filteredData={filteredData} title={title} />}
+
+      {filteredData.length > 0 && indicator === "StochRSI_S" && (
+        <StochRSI_S filteredData={filteredData} title={title} />
+      )}
 
       {/* {filteredData.length > 0 && indicator === "PulseBTC" && (
         <PulseBTC
