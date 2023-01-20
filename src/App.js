@@ -17,7 +17,7 @@ function App() {
   const [filteredData, setFilteredData] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
-  const [indicator, setIndicator] = useState("StochRSI");
+  const [indicator, setIndicator] = useState("StochRSI_S");
   const [showTable, setShowTable] = useState(false);
   const [BTCdata, setBTCData] = useState([]);
 
