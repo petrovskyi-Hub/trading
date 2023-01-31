@@ -38,17 +38,17 @@ const calcStats = (periods, TP, SL) => {
         </p>
         <p>
           <span>Средний % прибыльных/убыточных сделок: </span>
-          <span className={s.positive} style={{ marginRight: "10px" }}>
-            {counterP !== 0 ? (profitP / counterP).toFixed(0) : 0}
-          </span>
+          <span className={s.positive}>{counterP !== 0 ? (profitP / counterP).toFixed(0) : 0}</span>{" "}
           <span className={s.negative}>{counterN !== 0 ? (profitN / counterN).toFixed(0).slice(1) : 0}</span>
         </p>
         <p>
-          Общее количество сделок/прибыльных/убыточных: {periods.length}/{counterP}/{counterN}
+          Общее количество сделок/прибыльных/убыточных: {periods.length}/<span className={s.positive}>{counterP} </span>
+          /<span className={s.negative}>{counterN}</span>
         </p>
         <p>
-          Соотношение сделок в % прибыльных/убыточных: {((counterP / periods.length) * 100).toFixed(0)}/
-          {((counterN / periods.length) * 100).toFixed(0)}
+          Соотношение сделок в % прибыльных/убыточных:{" "}
+          <span className={s.positive}>{((counterP / periods.length) * 100).toFixed(0)}</span>/
+          <span className={s.negative}>{((counterN / periods.length) * 100).toFixed(0)}</span>
         </p>
         <p>
           Суммарный % убыточных сделок: <span className={s.negative}>{profitN.toFixed(0).slice(1) || 0}</span>

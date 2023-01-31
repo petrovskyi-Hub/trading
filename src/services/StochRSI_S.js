@@ -25,7 +25,7 @@ export const algorithm1 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -37,7 +37,7 @@ export const algorithm1 = (data) => {
     }
 
     if (prevK < prevD && curK > curD && buyDate === null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
@@ -76,7 +76,7 @@ export const algorithm2 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -88,7 +88,7 @@ export const algorithm2 = (data) => {
     }
 
     if (prevK < 20 && curK > 20 && buyDate === null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
@@ -135,7 +135,7 @@ export const algorithm3 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -148,12 +148,12 @@ export const algorithm3 = (data) => {
     }
 
     if (prevK < prevD && curK > curD && buyDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
     if (prevPlusDI < prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
@@ -200,7 +200,7 @@ export const algorithm4 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -213,12 +213,12 @@ export const algorithm4 = (data) => {
     }
 
     if (prevK < 20 && curK > 20 && buyDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
     if (prevPlusDI < prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
@@ -262,7 +262,7 @@ export const algorithm5 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -275,12 +275,12 @@ export const algorithm5 = (data) => {
     }
 
     if (prevK < prevD && curK > curD && buyDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
     if (prevCCI14 < 0 && curCCI14 > 0 && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
@@ -323,7 +323,7 @@ export const algorithm6 = (data) => {
     const isSale = prevK > prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
-      saleDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      saleDate = new Date(Number(data[i][0]) * 1000);
       period.sale = {
         time: saleDate,
         price: Number(data[i][open]),
@@ -336,12 +336,12 @@ export const algorithm6 = (data) => {
     }
 
     if (prevK < 20 && curK > 20 && buyDate === null) {
-      startDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
     if (prevCCI14 < 0 && curCCI14 > 0 && startDate !== null) {
-      buyDate = new Date(Number(data[i][0]) * 1000).toLocaleDateString();
+      buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
         price: Number(data[i][open]),
