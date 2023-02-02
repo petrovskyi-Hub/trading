@@ -22,7 +22,7 @@ export const algorithm1 = (data) => {
     const curK = Number(data[i][KIndex]);
     const curD = Number(data[i][DIndex]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -36,7 +36,7 @@ export const algorithm1 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < prevD && curK > curD && buyDate === null) {
+    if (prevK <= prevD && curK > curD && buyDate === null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
@@ -73,7 +73,7 @@ export const algorithm2 = (data) => {
     const curK = Number(data[i][KIndex]);
     const curD = Number(data[i][DIndex]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -87,7 +87,7 @@ export const algorithm2 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < 20 && curK > 20 && buyDate === null) {
+    if (prevK <= 20 && curK > 20 && buyDate === null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
@@ -132,7 +132,7 @@ export const algorithm3 = (data) => {
     const curPlusDI = Number(data[i][PlusDIIndex]);
     const curMinusDI = Number(data[i][MinusDIIndex]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -147,12 +147,12 @@ export const algorithm3 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < prevD && curK > curD && buyDate === null) {
+    if (prevK <= prevD && curK > curD && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
-    if (prevPlusDI < prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
+    if (prevPlusDI <= prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
@@ -197,7 +197,7 @@ export const algorithm4 = (data) => {
     const curPlusDI = Number(data[i][PlusDIIndex]);
     const curMinusDI = Number(data[i][MinusDIIndex]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -212,12 +212,12 @@ export const algorithm4 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < 20 && curK > 20 && buyDate === null) {
+    if (prevK <= 20 && curK > 20 && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
-    if (prevPlusDI < prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
+    if (prevPlusDI <= prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
@@ -259,7 +259,7 @@ export const algorithm5 = (data) => {
     const prevCCI14 = Number(data[i - 1][CCI14Index]);
     const curCCI14 = Number(data[i][CCI14Index]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -274,12 +274,12 @@ export const algorithm5 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < prevD && curK > curD && buyDate === null) {
+    if (prevK <= prevD && curK > curD && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
-    if (prevCCI14 < 0 && curCCI14 > 0 && startDate !== null) {
+    if (prevCCI14 <= 0 && curCCI14 > 0 && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,
@@ -320,7 +320,7 @@ export const algorithm6 = (data) => {
     const prevCCI14 = Number(data[i - 1][CCI14Index]);
     const curCCI14 = Number(data[i][CCI14Index]);
 
-    const isSale = prevK > prevD && curK < curD && buyDate !== null;
+    const isSale = prevK >= prevD && curK < curD && buyDate !== null;
 
     if (isSale) {
       saleDate = new Date(Number(data[i][0]) * 1000);
@@ -335,12 +335,12 @@ export const algorithm6 = (data) => {
       // console.log("sale ", saleDate);
     }
 
-    if (prevK < 20 && curK > 20 && buyDate === null) {
+    if (prevK <= 20 && curK > 20 && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
     }
 
-    if (prevCCI14 < 0 && curCCI14 > 0 && startDate !== null) {
+    if (prevCCI14 <= 0 && curCCI14 > 0 && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
         time: buyDate,

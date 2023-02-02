@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import DealTable from "../DealTable/DealTable";
 import calcStats from "../Stats/Stats";
 import { algorithm1, algorithm2, algorithm3, algorithm4, algorithm5, algorithm6 } from "../../services/StochRSI_S";
+import s from "./StochRSI_S.module.css";
 
-function StochRSI_S({ filteredData, title, setError }) {
+function StochRSI_S({ filteredData, title }) {
+  const [error, setError] = useState("");
   const [periods1, setPeriods1] = useState([]);
   const [periods2, setPeriods2] = useState([]);
   const [periods3, setPeriods3] = useState([]);
@@ -38,6 +40,11 @@ function StochRSI_S({ filteredData, title, setError }) {
 
   return (
     <>
+      {error !== "" && (
+        <p className={s.error} role="alert">
+          {error}
+        </p>
+      )}
       {!!periods1.length && (
         <>
           <h3 style={{ textAlign: "center" }}>Алгоритм 1</h3>
