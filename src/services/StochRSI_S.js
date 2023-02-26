@@ -152,6 +152,11 @@ export const algorithm3 = (data) => {
       // console.log("start ", startDate);
     }
 
+    if (prevK >= prevD && curK < curD && startDate !== null) {
+      startDate = null;
+      // console.log("stop ", stopDate);
+    }
+
     if (prevPlusDI <= prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
@@ -217,6 +222,11 @@ export const algorithm4 = (data) => {
       // console.log("start ", startDate);
     }
 
+    if (prevK >= prevD && curK < curD && startDate !== null) {
+      startDate = null;
+      // console.log("stop ", stopDate);
+    }
+
     if (prevPlusDI <= prevMinusDI && curPlusDI > curMinusDI && startDate !== null) {
       buyDate = new Date(Number(data[i][0]) * 1000);
       period.buy = {
@@ -248,7 +258,7 @@ export const algorithm5 = (data) => {
 
   const periods = [];
 
-  // console.log("algorithm 3");
+  // console.log("algorithm 5");
 
   for (let i = 2; i < data.length; i++) {
     const prevK = Number(data[i - 1][KIndex]);
@@ -277,6 +287,11 @@ export const algorithm5 = (data) => {
     if (prevK <= prevD && curK > curD && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
+    }
+
+    if (prevK >= prevD && curK < curD && startDate !== null) {
+      startDate = null;
+      // console.log("stop ", stopDate);
     }
 
     if (prevCCI14 <= 0 && curCCI14 > 0 && startDate !== null) {
@@ -310,7 +325,7 @@ export const algorithm6 = (data) => {
 
   const periods = [];
 
-  // console.log("algorithm 4");
+  // console.log("algorithm 6");
 
   for (let i = 2; i < data.length; i++) {
     const prevK = Number(data[i - 1][KIndex]);
@@ -338,6 +353,11 @@ export const algorithm6 = (data) => {
     if (prevK <= 20 && curK > 20 && buyDate === null) {
       startDate = new Date(Number(data[i][0]) * 1000);
       // console.log("start ", startDate);
+    }
+
+    if (prevK >= prevD && curK < curD && startDate !== null) {
+      startDate = null;
+      // console.log("stop ", stopDate);
     }
 
     if (prevCCI14 <= 0 && curCCI14 > 0 && startDate !== null) {
